@@ -10,7 +10,27 @@ This project enables users to query SQL databases using plain English. Instead o
 - "What are the top 5 best-selling products?"
 - "Show me all orders from last month with total over $100"
 
-The agent translates your question into SQL, executes it, and returns the results.
+The agent translates your question into SQL, validates it, executes it, and returns the results -- with automatic error correction if the first attempt fails.
+
+**Framing:** This is a text-to-code generation testbed. SQL is a constrained language, making it ideal for systematic evaluation of LLM code generation capabilities before tackling general-purpose code.
+
+## Architecture
+
+The agent uses a **LangGraph state graph** informed by current text-to-SQL research (DIN-SQL, MAC-SQL, CHESS):
+
+```
+[schema_filter] -> [generate_sql] -> [validate_query] -> [execute_query] -> [END]
+                        ^                  |                    |
+                        |                  v                    v
+                        +--------- [handle_error] <-----------+
+                                   (max 3 retries)
+```
+
+Key design decisions:
+- **Schema filtering** before generation (most impactful sub-task per research)
+- **SQL validation** via sqlglot before execution (catches syntax errors without hitting DB)
+- **Self-correction** with error context feedback (research shows +5-10% accuracy)
+- **Structured graph** over free-form ReAct (better for 7B local models)
 
 ## Features
 
@@ -18,33 +38,35 @@ The agent translates your question into SQL, executes it, and returns the result
 - **Natural Language Interface**: Ask questions in plain English
 - **SQL Generation**: Automatically generates and executes SQL queries
 - **Schema Awareness**: Understands your database structure for accurate queries
-- **Streamlit UI**: User-friendly web interface (coming in Sprint 2)
+- **Self-Correction**: Retries with error context if SQL generation fails
+- **Evaluation Framework**: Systematic model comparison with standardized metrics
+- **Streamlit UI**: User-friendly web interface (Sprint 2)
 
 ## Tech Stack
 
 - **LLM Runtime**: [Ollama](https://ollama.ai/)
-- **Framework**: [LangChain](https://python.langchain.com/) (SQL Agent)
-- **Frontend**: Streamlit
+- **Agent Framework**: [LangChain](https://python.langchain.com/) + [LangGraph](https://langchain-ai.github.io/langgraph/)
+- **SQL Validation**: [SQLGlot](https://github.com/tobymao/sqlglot)
+- **Frontend**: Streamlit (Sprint 2)
 - **Database**: SQLite (with potential for PostgreSQL/MySQL support)
 - **Language**: Python 3.10+
 
 ## Recommended Models
 
-| Model | Size | Notes |
-|-------|------|-------|
-| `llama3.1:8b` | 4.7GB | Good balance of speed and quality |
-| `codellama:13b` | 7.4GB | Code-focused, better SQL syntax |
-| `mistral:7b` | 4.1GB | Fast, decent SQL generation |
-| `sqlcoder:7b` | 4.1GB | Specialized for SQL |
+| Priority | Model | Size | Notes |
+|----------|-------|------|-------|
+| Primary | `sqlcoder:7b` | 4.1GB | Fine-tuned for SQL, outperforms GPT-3.5 |
+| Primary | `mannix/defog-llama3-sqlcoder-8b` | ~4.7GB | Llama 3 SQL fine-tune |
+| Comparison | `llama3.1:8b` | 4.7GB | General-purpose baseline |
+| Optional | `sqlcoder:15b` | ~8GB | Higher accuracy if VRAM allows |
 
 ## Project Status
 
-This project is under active development.
-
-- [ ] **Sprint 1**: Jupyter notebook experimentation
+- [x] **Phase 0**: Research state of the art ([findings](docs/research/text_to_sql_state_of_art.md))
+- [ ] **Sprint 1**: Jupyter notebook experimentation with evaluation framework
 - [ ] **Sprint 2**: Streamlit application
 
-See [PLAN.md](PLAN.md) for the detailed development roadmap.
+See [PLAN.md](docs/plans/PLAN.md) for the detailed development roadmap.
 
 ## Getting Started
 
@@ -53,7 +75,7 @@ See [PLAN.md](PLAN.md) for the detailed development roadmap.
 1. Install [Ollama](https://ollama.ai/)
 2. Pull a model:
    ```bash
-   ollama pull llama3.1:8b
+   ollama pull sqlcoder:7b
    ```
 3. Python 3.10+
 
@@ -74,19 +96,37 @@ pip install -r requirements.txt
 
 ### Usage
 
-*Coming soon - see Sprint 1 notebook for experimentation*
+*Coming soon -- see Sprint 1 notebook for experimentation*
 
 ## Project Structure
 
 ```
 sql-query-agent-ollama/
+├── .claude/              # AI agent configuration
 ├── app/                  # Streamlit application (Sprint 2)
-├── notebooks/            # Jupyter notebooks for experimentation
+├── notebooks/            # Jupyter notebooks (Sprint 1)
 ├── data/                 # Sample databases
+├── docs/
+│   ├── plans/            # Sprint plans
+│   ├── decisions/        # Decision log
+│   ├── research/         # State-of-art research
+│   └── blog/             # Blog materials and drafts
+├── tests/                # Tests (Sprint 2)
 ├── requirements.txt
-├── PLAN.md              # Development roadmap
 └── README.md
 ```
+
+## Evaluation
+
+The project includes a systematic evaluation framework comparing models on:
+
+| Metric | Description |
+|--------|-------------|
+| Execution Accuracy | Does the query return correct results? |
+| Parsability Rate | % of valid SQL on first attempt |
+| Retry Rate | How often error correction is needed |
+| Latency | Time from question to answer |
+| Error Categorization | Schema linking / syntax / logic / hallucination |
 
 ## Contributing
 

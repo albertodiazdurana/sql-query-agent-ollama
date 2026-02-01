@@ -1,0 +1,17 @@
+# LLM and Agent Framework
+langchain
+langchain-community
+langchain-ollama
+langgraph
+
+# Database
+sqlalchemy
+
+# SQL Validation
+sqlglot
+
+# Notebook
+jupyter
+
+# Frontend (Sprint 2)
+streamlit
