@@ -109,6 +109,16 @@
   - Supporting assets (screenshots, diagrams) can use any name but should be referenced from the materials file
 - **Evidence:** The blog file was initially named `blog.md`, which gave no indication of its role (materials tracking) or scope (Sprint 1). When it came time to think about the actual blog draft and final post, the name was already taken. Renamed to `blog-materials-s01.md` to make room for `blog-s01.md` (draft) and `post-s01.md` (final) in the same directory.
 
+### Add IDE permission configuration to DSM 4.0 environment setup and Custom Instructions
+- **DSM Section:** DSM 4.0 §P0 (Environment Setup) + Custom Instructions template
+- **Problem:** DSM 4.0's collaboration model assumes the human reviews and approves file changes before they're applied. However, the VSCode Claude Code extension has an `initialPermissionMode` setting that defaults to auto-accepting edits in some configurations. When set to `acceptEdits`, changes are applied silently without showing a diff approval dialog, breaking the human-in-the-loop principle without any visible indication. The human sees the diff in the chat but cannot reject it — the change is already on disk.
+- **Proposed Solution:** Add an "IDE Configuration" step to DSM 4.0 §P0 and to the Custom Instructions template:
+  - For Claude Code in VSCode: set `"claudeCode.initialPermissionMode": "default"` in VSCode settings
+  - This enables side-by-side diff preview with approve/reject buttons for every file edit
+  - List this alongside other environment prerequisites (Python version, venv, Ollama, etc.)
+  - Consider adding a verification step: "Confirm the IDE shows a diff approval dialog when the agent makes a test edit"
+- **Evidence:** During Sprint 2 Phase 1, the agent wrote 4 files (config.py, database.py, agent.py, sprint-2-plan.md) before the user noticed changes were being auto-applied without approval. The setting `"claudeCode.initialPermissionMode": "default"` resolved the issue immediately. A test edit confirmed the approve/reject buttons appeared.
+
 ---
 
 ## Low Priority

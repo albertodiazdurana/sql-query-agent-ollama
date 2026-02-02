@@ -257,13 +257,21 @@
 - **Reasoning:** Clarity 2 — no naming guidance exists for blog artifacts. Applicability 4 — every project following the blog workflow will hit this. Completeness 2 — the 6-step process is well-defined but the file naming for each step's output is not. Efficiency 3 — easy to fix once identified, but required mid-sprint rename.
 - **Recommendation:** Add a blog artifact naming convention to Section 2.5.6 or DSM_0 project structure: `blog-materials-{scope}.md` for collected materials, `blog-{scope}.md` for the draft, `post-{scope}.md` for the final publication. The `{scope}` should follow the project's sprint/phase convention (e.g., `s01`, `s01-phase3`, `final`). See `backlogs.md` for proposal.
 
+### Entry 14: DSM 4.0 / Custom Instructions — IDE Permission Mode for Human-in-the-Loop File Edits
+- **Date:** 2026-02-02 | **Sprint:** S2 Phase 1 | **Type:** Gap
+- **Context:** Sprint 2 moved from the notebook paste protocol (human copies each cell) to Claude Code writing files directly. The CLAUDE.md protocol was updated to specify "explain why → write file → user reviews in IDE." However, the VSCode extension's `initialPermissionMode` setting was set to `acceptEdits`, which auto-applies all file changes without showing a diff approval dialog. The human saw diffs in the chat output but had no approve/reject button — changes were already applied. This silently bypassed the human-in-the-loop principle.
+- **Finding:** DSM 4.0 defines the module development protocol (explain → build → confirm → test) and Custom Instructions specify the collaboration workflow, but neither mentions IDE-level permission settings. When the AI agent writes files directly, the IDE's permission configuration determines whether the human actually gets to approve changes before they're applied. The setting `"claudeCode.initialPermissionMode": "default"` enables the diff approval flow; `"acceptEdits"` disables it. This is an environment dependency that affects the entire collaboration model.
+- **Scores:** Clarity 2, Applicability 4, Completeness 2, Efficiency 3 (Avg: 2.75)
+- **Reasoning:** Clarity 2 — DSM never mentions IDE permission settings. Applicability 4 — every project using Claude Code's direct file writing will face this. Completeness 2 — the collaboration model assumes human review but doesn't ensure the tooling enforces it. Efficiency 3 — quick fix once identified, but the silent bypass went unnoticed through several file writes.
+- **Recommendation:** Add IDE permission configuration to DSM 4.0's environment setup phase (P0) and to the Custom Instructions template. Specifically: when using Claude Code in VSCode, set `"claudeCode.initialPermissionMode": "default"` to enable diff approval. This should be listed alongside other environment prerequisites (Python version, venv, dependencies). See `backlogs.md` for proposal.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 13 |
+| Entries logged | 14 |
 | Average score | 3.0 / 5 |
-| Gaps found | 8 |
+| Gaps found | 9 |
 | Pain points | 3 |
 | Successes | 2 |
 
