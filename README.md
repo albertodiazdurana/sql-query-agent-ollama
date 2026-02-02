@@ -28,8 +28,10 @@ The agent uses a **LangGraph state graph** informed by current text-to-SQL resea
 
 Key design decisions:
 - **Schema filtering** before generation (most impactful sub-task per research)
+- **SQL post-processing** for dialect normalization (ILIKE→LIKE, column casing, PostgreSQL→SQLite)
 - **SQL validation** via sqlglot before execution (catches syntax errors without hitting DB)
 - **Self-correction** with error context feedback (research shows +5-10% accuracy)
+- **Model-aware prompting** (sqlcoder:7b requires specific prompt format; see [DEC-003](docs/decisions/DEC-003_model-aware-prompts.md))
 - **Structured graph** over free-form ReAct (better for 7B local models)
 
 ## Features
@@ -63,8 +65,23 @@ Key design decisions:
 ## Project Status
 
 - [x] **Phase 0**: Research state of the art ([findings](docs/research/text_to_sql_state_of_art.md))
-- [ ] **Sprint 1**: Jupyter notebook experimentation with evaluation framework
+- [x] **Sprint 1, Phase 1**: Environment setup — Ollama, models, Chinook database
+- [x] **Sprint 1, Phase 2**: Core agent build — 5-node LangGraph agent, SQL post-processing, 6/6 test queries passing
+- [ ] **Sprint 1, Phase 3**: Evaluation framework — test suite, metrics, model comparison
 - [ ] **Sprint 2**: Streamlit application
+
+### Current Results (Sprint 1, Phase 2)
+
+The agent successfully answers natural language questions about the Chinook database:
+
+| Query | Result | Retries | Time |
+|-------|--------|---------|------|
+| Top 5 artists by album count | Iron Maiden (21), Led Zeppelin (14), Deep Purple (11)... | 0 | 19.1s |
+| List all genres | 20 genres returned | 0 | 5.0s |
+| Top 3 customers by spending | Helena Holy ($49.62), Richard Cunningham ($47.62)... | 0 | 20.8s |
+| Find all tracks by AC/DC | 8 tracks found | 0 | 8.1s |
+| Track count for Heavy Metal/Metal/Blues | 483 tracks | 0 | 18.0s |
+| Top 5 artists in Metal/Blues genres | Iron Maiden (132), Metallica (112), Eric Clapton (32)... | 0 | 27.0s |
 
 See [PLAN.md](docs/plans/PLAN.md) for the detailed development roadmap.
 

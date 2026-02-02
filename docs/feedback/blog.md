@@ -27,7 +27,9 @@ Track blog materials collected during the project and evaluate how well the DSM 
 | Error repair observation | handle_error successfully repairs bad SQL but with high latency (~62s) | Collected |
 | Screenshots/outputs | Notebook outputs, evaluation tables | Pending |
 | Node-by-node build approach | Built and tested 5 nodes individually before wiring graph — caught prompt issue early | Collected |
-| Personal touch: genre exploration | Author likes heavy metal, metal, and blues — used the agent to explore these genres in Chinook. Fun angle for blog narrative | Pending |
+| Personal touch: genre exploration | Author likes heavy metal, metal, and blues — used the agent to explore these genres in Chinook. Iron Maiden 132 tracks, Metallica 112. Fun angle for blog narrative | Collected |
+| Post-processing discovery | Prompt rules can't override fine-tuned model behavior — needed programmatic dialect normalization (ILIKE, NULLS LAST, column casing) | Collected |
+| Iterative debugging narrative | Tried prompt fix → failed → built post-processing → success. Good storytelling arc for blog | Collected |
 
 ### Sprint 2
 
