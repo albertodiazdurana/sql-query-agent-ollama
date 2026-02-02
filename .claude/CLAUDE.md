@@ -95,11 +95,13 @@ This project uses notebooks in Sprint 1. The following protocol is mandatory:
 
 ## App Development Protocol (Sprint 2)
 
-When building Streamlit application code in Sprint 2:
-- Guide step by step, explain **why** before each action
-- Provide code segments for user to copy/paste
-- Wait for confirmation before proceeding to next step
-- Build modules incrementally with TDD
+Sprint 2 uses Claude Code to write files directly (changed from Sprint 1 paste protocol). User reviews in IDE.
+
+- Explain **why** before creating or modifying each file
+- Write files directly using Claude Code tools
+- Build modules incrementally — one module at a time, tests alongside
+- Run `pytest tests/` after each module to verify before proceeding
+- Keep changes focused: one logical unit per step
 
 ## DSM Alignment
 
