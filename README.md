@@ -57,33 +57,39 @@ Key design decisions:
 
 | Priority | Model | Size | Notes |
 |----------|-------|------|-------|
-| Primary | `sqlcoder:7b` | 4.1GB | Fine-tuned for SQL, outperforms GPT-3.5 |
-| Primary | `mannix/defog-llama3-sqlcoder-8b` | ~4.7GB | Llama 3 SQL fine-tune |
-| Comparison | `llama3.1:8b` | 4.7GB | General-purpose baseline |
-| Optional | `sqlcoder:15b` | ~8GB | Higher accuracy if VRAM allows |
+| **Default** | `llama3.1:8b` | 4.7GB | Recommended — 100% parsability, zero hallucination, 1.7x faster ([DEC-005](docs/decisions/DEC-005_model-selection-llama3-1-8b.md)) |
+| Alternative | `sqlcoder:7b` | 4.1GB | SQL fine-tuned, same accuracy but higher hallucination risk |
+| Untested | `mannix/defog-llama3-sqlcoder-8b` | ~4.7GB | Llama 3 SQL fine-tune (candidate for Sprint 2) |
+| Untested | `sqlcoder:15b` | ~8GB | Higher accuracy if VRAM allows |
 
 ## Project Status
 
 - [x] **Phase 0**: Research state of the art ([findings](docs/research/text_to_sql_state_of_art.md))
 - [x] **Sprint 1, Phase 1**: Environment setup — Ollama, models, Chinook database
 - [x] **Sprint 1, Phase 2**: Core agent build — 5-node LangGraph agent, SQL post-processing, 6/6 test queries passing
-- [ ] **Sprint 1, Phase 3**: Evaluation framework — test suite, metrics, model comparison
+- [x] **Sprint 1, Phase 3**: Evaluation framework — 14-query test suite, 2-model comparison, model selection ([EXP-001](data/experiments/s01_d02_exp001/README.md))
 - [ ] **Sprint 2**: Streamlit application
 
-### Current Results (Sprint 1, Phase 2)
+### Evaluation Results (Sprint 1, Phase 3)
 
-The agent successfully answers natural language questions about the Chinook database:
+EXP-001 compared `sqlcoder:7b` and `llama3.1:8b` on a 14-query test suite (5 Easy, 5 Medium, 4 Hard):
 
-| Query | Result | Retries | Time |
-|-------|--------|---------|------|
-| Top 5 artists by album count | Iron Maiden (21), Led Zeppelin (14), Deep Purple (11)... | 0 | 19.1s |
-| List all genres | 20 genres returned | 0 | 5.0s |
-| Top 3 customers by spending | Helena Holy ($49.62), Richard Cunningham ($47.62)... | 0 | 20.8s |
-| Find all tracks by AC/DC | 8 tracks found | 0 | 8.1s |
-| Track count for Heavy Metal/Metal/Blues | 483 tracks | 0 | 18.0s |
-| Top 5 artists in Metal/Blues genres | Iron Maiden (132), Metallica (112), Eric Clapton (32)... | 0 | 27.0s |
+| Metric | sqlcoder:7b | llama3.1:8b |
+|--------|-------------|-------------|
+| Execution Accuracy | 42.9% (6/14) | 42.9% (6/14) |
+| Raw Parsability | 85.7% (12/14) | **100% (14/14)** |
+| Table Hallucination | 2 instances | **0 instances** |
+| Avg Latency | 30.3s | **17.6s** |
 
-See [PLAN.md](docs/plans/PLAN.md) for the detailed development roadmap.
+**Key finding:** SQL fine-tuning did not improve accuracy over a general-purpose model at the 7-8B scale. `llama3.1:8b` is recommended for its reliability (zero hallucination, 100% parsability) and speed.
+
+| Difficulty | sqlcoder:7b | llama3.1:8b |
+|------------|-------------|-------------|
+| Easy (5) | 80% | **100%** |
+| Medium (5) | 40% | 20% |
+| Hard (4) | 0% | 0% |
+
+See the [full experiment report](data/experiments/s01_d02_exp001/README.md) and [PLAN.md](docs/plans/PLAN.md) for the development roadmap.
 
 ## Getting Started
 
@@ -122,11 +128,18 @@ sql-query-agent-ollama/
 ├── .claude/              # AI agent configuration
 ├── app/                  # Streamlit application (Sprint 2)
 ├── notebooks/            # Jupyter notebooks (Sprint 1)
-├── data/                 # Sample databases
+├── scripts/              # Reusable evaluation scripts
+│   └── eval_harness.py   # Evaluation framework (EX, parsability, error categorization)
+├── data/
+│   ├── chinook.db        # Chinook SQLite sample database (11 tables)
+│   └── experiments/      # Experiment artifacts (DSM C.1.6)
+│       └── s01_d02_exp001/  # EXP-001: Model comparison
 ├── docs/
 │   ├── plans/            # Sprint plans
-│   ├── decisions/        # Decision log
+│   ├── decisions/        # Decision log (DEC-001 through DEC-005)
+│   ├── checkpoints/      # Milestone checkpoints
 │   ├── research/         # State-of-art research
+│   ├── feedback/         # DSM methodology feedback
 │   └── blog/             # Blog materials and drafts
 ├── tests/                # Tests (Sprint 2)
 ├── requirements.txt

@@ -4,7 +4,7 @@
 **Sprint:** 1 of 2
 **DSM Track:** DSM 1.0 (Data Science Collaboration)
 **Author:** Alberto
-**Status:** In Progress
+**Status:** Complete
 
 ---
 
@@ -18,10 +18,10 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 
 | Input | Status | Notes |
 |-------|--------|-------|
-| Ollama installed and running | Pending | Required for all LLM calls |
-| `sqlcoder:7b` model pulled | Pending | Primary model |
-| `llama3.1:8b` model pulled | Pending | Comparison baseline |
-| Sample SQLite database (Chinook) | Pending | Well-known schema, good for benchmarking |
+| Ollama installed and running | Done | Running on Windows host, accessible via WSL gateway IP |
+| `sqlcoder:7b` model pulled | Done | 3.8 GB |
+| `llama3.1:8b` model pulled | Done | 4.6 GB |
+| Sample SQLite database (Chinook) | Done | `data/chinook.db`, 11 tables |
 | Python venv with dependencies | Done | `requirements.txt` installed |
 | Research document | Done | `docs/research/text_to_sql_state_of_art.md` |
 
@@ -47,9 +47,9 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 - Notebook section: database setup and schema documentation
 
 **Readiness for Phase 2:**
-- [ ] Ollama responds to test prompt
-- [ ] Database loads and schema is inspectable via SQLAlchemy
-- [ ] At least 2 models pulled and verified
+- [x] Ollama responds to test prompt
+- [x] Database loads and schema is inspectable via SQLAlchemy
+- [x] At least 2 models pulled and verified
 
 ---
 
@@ -76,10 +76,10 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 - Notebook section: agent architecture with inline documentation
 
 **Readiness for Phase 3:**
-- [ ] Agent successfully answers at least 3 simple queries end-to-end
-- [ ] Retry logic triggers on intentionally malformed scenarios
-- [ ] sqlglot validation catches syntax errors before execution
-- [ ] Destructive queries are blocked
+- [x] Agent successfully answers at least 3 simple queries end-to-end
+- [x] Retry logic triggers on intentionally malformed scenarios
+- [x] sqlglot validation catches syntax errors before execution
+- [x] Destructive queries are blocked
 
 ---
 
@@ -109,30 +109,30 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 - Notebook section: evaluation framework and results
 
 **Readiness for Sprint 2:**
-- [ ] At least 2 models evaluated on same test suite
-- [ ] Results documented with metrics tables
-- [ ] Best-performing model identified for Sprint 2 default
-- [ ] Known limitations documented (informs Sprint 2 error handling)
+- [x] At least 2 models evaluated on same test suite
+- [x] Results documented with metrics tables
+- [x] Best-performing model identified for Sprint 2 default (llama3.1:8b — DEC-005)
+- [x] Known limitations documented (6 limitations, LIM-001 through LIM-006)
 
 ---
 
 ## Priority Breakdown (MUST / SHOULD / COULD)
 
-### MUST (Non-negotiable)
-- [ ] Working LangGraph agent with generate -> validate -> execute -> error loop
-- [ ] Schema filtering node (research: most impactful sub-task)
-- [ ] sqlglot validation before execution
-- [ ] Security: block destructive SQL
-- [ ] Evaluation on at least 2 models with Execution Accuracy metric
-- [ ] Test suite with Easy + Medium queries (minimum 8 queries)
+### MUST (Non-negotiable) — All Met
+- [x] Working LangGraph agent with generate -> validate -> execute -> error loop
+- [x] Schema filtering node (research: most impactful sub-task)
+- [x] sqlglot validation before execution
+- [x] Security: block destructive SQL
+- [x] Evaluation on at least 2 models with Execution Accuracy metric
+- [x] Test suite with Easy + Medium queries (minimum 8 queries)
 
-### SHOULD (Expected if on track)
-- [ ] Hard queries in test suite (3-5 additional)
-- [ ] All 5 evaluation metrics tracked (EX, Parsability, Retry Rate, Latency, Error Categories)
-- [ ] Few-shot examples in prompts (research: +10-20% for 7B)
-- [ ] Blog materials collected throughout sprint
+### SHOULD (Expected if on track) — 3/4 Met
+- [x] Hard queries in test suite (4 queries)
+- [x] All 5 evaluation metrics tracked (EX, Parsability, Retry Rate, Latency, Error Categories) — plus Post-Processing Rate (6 total)
+- [ ] Few-shot examples in prompts (research: +10-20% for 7B) — **deferred to Sprint 2 (LIM-006)**
+- [x] Blog materials collected throughout sprint
 
-### COULD (Bonus)
+### COULD (Bonus) — Not Done
 - [ ] Test `mannix/defog-llama3-sqlcoder-8b` as third model
 - [ ] Test `sqlcoder:15b` if VRAM allows
 - [ ] Visualization of evaluation results (charts/plots)
@@ -142,14 +142,14 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 
 ## Success Criteria
 
-| Criterion | Target | Measurement |
-|-----------|--------|-------------|
-| Agent functional | End-to-end NL -> SQL -> results | Manual verification |
-| Execution Accuracy (best model) | >= 60% on full test suite | Automated evaluation |
-| Parsability Rate | >= 70% first-attempt valid SQL | Automated evaluation |
-| Models compared | >= 2 models on same test suite | Evaluation results table |
-| Test coverage | >= 8 queries across difficulties | Test suite count |
-| Error handling | Retry loop works on failures | Manual + automated testing |
+| Criterion | Target | Result | Status |
+|-----------|--------|--------|--------|
+| Agent functional | End-to-end NL -> SQL -> results | 6/6 Phase 2 queries pass | **Met** |
+| Execution Accuracy (best model) | >= 60% on full test suite | 42.9% (both models) | **Not met** |
+| Parsability Rate | >= 70% first-attempt valid SQL | 100% (llama3.1:8b) | **Met** |
+| Models compared | >= 2 models on same test suite | 2 models, 14 queries each | **Met** |
+| Test coverage | >= 8 queries across difficulties | 14 queries (3 difficulties) | **Met** |
+| Error handling | Retry loop works on failures | Tested and functional | **Met** |
 
 ---
 
@@ -157,15 +157,18 @@ Build a working text-to-SQL agent prototype in a Jupyter notebook using LangGrap
 
 | Deliverable | Location | Status |
 |-------------|----------|--------|
-| Exploration notebook | `notebooks/01_sql_agent_exploration.ipynb` | Pending |
-| Sample database | `data/` | Pending |
-| Blog materials | `docs/blog/` | Pending |
-| DSM feedback files | `docs/feedback/` | Seeded |
+| Exploration notebook | `notebooks/01_sql_agent_exploration.ipynb` | Complete (32 cells) |
+| Sample database | `data/chinook.db` | Complete |
+| Evaluation harness | `scripts/eval_harness.py` | Complete |
+| Experiment results | `data/experiments/s01_d02_exp001/` | Complete (2 JSON, README, runner) |
+| Blog materials | `docs/blog/` | Complete |
+| DSM feedback files | `docs/feedback/` | Complete (11 entries, 10 backlog proposals) |
+| Decision log | `docs/decisions/DEC-001` through `DEC-005` | Complete |
 
 ---
 
-## Open Decisions
+## Open Decisions (Resolved)
 
-1. **Database choice:** Chinook (well-known, 11 tables) vs. custom schema -- leaning Chinook for comparability
-2. **VRAM budget:** Determines whether 15B models are feasible
-3. **Few-shot selection:** Static examples vs. question-similarity-based selection
+1. **Database choice:** Chinook — DEC-001
+2. **VRAM budget:** 7-8B models only (sqlcoder:7b, llama3.1:8b). 15B not tested.
+3. **Few-shot selection:** Deferred to Sprint 2 (LIM-006). No few-shot in Sprint 1.

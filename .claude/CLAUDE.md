@@ -87,7 +87,7 @@ This project uses notebooks in Sprint 1. The following protocol is mandatory:
 - Never write or modify `.ipynb` files directly
 - Never generate multiple cells in a single message unless explicitly requested with "generate all cells"
 - Never ask "Want me to proceed with these next steps?" followed by a list of cells -- just provide the next single cell
-- Number each cell with a comment (`# Cell 1`, `# Cell 2`)
+- Number code cells with a comment (`# Cell 1`, `# Cell 2`); markdown cells are structural headers and should NOT be numbered
 - "Continue" or "yes" = generate the next cell
 - If the output reveals an issue, address it before moving forward
 

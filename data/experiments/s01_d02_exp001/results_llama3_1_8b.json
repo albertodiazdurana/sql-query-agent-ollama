@@ -1,0 +1,756 @@
+{
+  "model": "llama3.1:8b",
+  "n_queries": 14,
+  "summary": {
+    "execution_accuracy": 6,
+    "raw_parsability": 14,
+    "effective_parsability": 13,
+    "retry_rate": 2,
+    "post_processing_rate": 2,
+    "avg_latency": 17.586422392300197
+  },
+  "per_difficulty": {
+    "Easy": {
+      "n": 5,
+      "execution_accuracy": 5,
+      "avg_latency": 6.768246412277222
+    },
+    "Medium": {
+      "n": 5,
+      "execution_accuracy": 1,
+      "avg_latency": 13.53555965423584
+    },
+    "Hard": {
+      "n": 4,
+      "execution_accuracy": 0,
+      "avg_latency": 36.17272078990936
+    }
+  },
+  "results": [
+    {
+      "query_id": "E1",
+      "difficulty": "Easy",
+      "question": "How many employees are there?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+      "final_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 7.91,
+      "actual_result": [
+        [
+          8
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "E2",
+      "difficulty": "Easy",
+      "question": "List all media types",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT Name FROM MediaType",
+      "final_sql": "SELECT Name FROM MediaType",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 5.04,
+      "actual_result": [
+        [
+          "MPEG audio file"
+        ],
+        [
+          "Protected AAC audio file"
+        ],
+        [
+          "Protected MPEG-4 video file"
+        ],
+        [
+          "Purchased AAC audio file"
+        ],
+        [
+          "AAC audio file"
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "E3",
+      "difficulty": "Easy",
+      "question": "What is the most expensive track?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT Track.Name, UnitPrice\nFROM Track\nORDER BY UnitPrice DESC\nLIMIT 1",
+      "final_sql": "SELECT Track.Name, UnitPrice\nFROM Track\nORDER BY UnitPrice DESC\nLIMIT 1",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 7.42,
+      "actual_result": [
+        [
+          "Battlestar Galactica: The Story So Far",
+          1.99
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "E4",
+      "difficulty": "Easy",
+      "question": "How many customers are from Brazil?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT COUNT(*) \nFROM Customer \nWHERE Country = 'Brazil'",
+      "final_sql": "SELECT COUNT(*) \nFROM Customer \nWHERE Country = 'Brazil'",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 7.13,
+      "actual_result": [
+        [
+          5
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "E5",
+      "difficulty": "Easy",
+      "question": "Show the 5 longest tracks by duration",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT Name, Milliseconds \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+      "final_sql": "SELECT Name, Milliseconds \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 6.35,
+      "actual_result": [
+        [
+          "Occupation / Precipice",
+          5286953
+        ],
+        [
+          "Through a Looking Glass",
+          5088838
+        ],
+        [
+          "Greetings from Earth, Pt. 1",
+          2960293
+        ],
+        [
+          "The Man With Nine Lives",
+          2956998
+        ],
+        [
+          "Battlestar Galactica, Pt. 2",
+          2956081
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "M1",
+      "difficulty": "Medium",
+      "question": "Which genre has the most tracks?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT G.Name \nFROM Genre G \nJOIN Track T ON G.GenreId = T.GenreId \nGROUP BY G.Name \nORDER BY COUNT(T.TrackId) DESC LIMIT 1",
+      "final_sql": "SELECT G.Name \nFROM Genre G \nJOIN Track T ON G.GenreId = T.GenreId \nGROUP BY G.Name \nORDER BY COUNT(T.TrackId) DESC LIMIT 1",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": true,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 9.13,
+      "actual_result": [
+        [
+          "Rock"
+        ]
+      ],
+      "error": null,
+      "error_category": null
+    },
+    {
+      "query_id": "M2",
+      "difficulty": "Medium",
+      "question": "How much has each customer spent in total? Show top 5.",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT \n    C.CustomerId,\n    C.FirstName || ' ' || C.LastName AS CustomerName,\n    SUM(IL.UnitPrice * IL.Quantity) AS TotalSpent\nFROM \n    Invoice I\nJOIN \n    InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\nJOIN \n    Customer C ON I.CustomerId = C.CustomerId\nGROUP BY \n    C.CustomerId, C.FirstName, C.LastName\nORDER BY \n    TotalSpent DESC\nLIMIT 5",
+      "final_sql": "SELECT \n    C.CustomerId,\n    C.FirstName || ' ' || C.LastName AS CustomerName,\n    SUM(IL.UnitPrice * IL.Quantity) AS TotalSpent\nFROM \n    Invoice I\nJOIN \n    InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\nJOIN \n    Customer C ON I.CustomerId = C.CustomerId\nGROUP BY \n    C.CustomerId, C.FirstName, C.LastName\nORDER BY \n    TotalSpent DESC\nLIMIT 5",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 23.67,
+      "actual_result": [
+        [
+          6,
+          "Helena Hol\u00fd",
+          49.620000000000005
+        ],
+        [
+          26,
+          "Richard Cunningham",
+          47.62000000000002
+        ],
+        [
+          57,
+          "Luis Rojas",
+          46.62000000000002
+        ],
+        [
+          45,
+          "Ladislav Kov\u00e1cs",
+          45.62000000000001
+        ],
+        [
+          46,
+          "Hugh O'Reilly",
+          45.62000000000001
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "M3",
+      "difficulty": "Medium",
+      "question": "List albums that have more than 20 tracks",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT A.Title \nFROM Album AS A \nJOIN Track AS T ON A.AlbumId = T.AlbumId \nGROUP BY A.Title \nHAVING COUNT(T.TrackId) > 20",
+      "final_sql": "SELECT A.Title \nFROM Album AS A \nJOIN Track AS T ON A.AlbumId = T.AlbumId \nGROUP BY A.Title \nHAVING COUNT(T.TrackId) > 20",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 10.24,
+      "actual_result": [
+        [
+          "Ac\u00fastico"
+        ],
+        [
+          "Ac\u00fastico MTV"
+        ],
+        [
+          "Afrociberdelia"
+        ],
+        [
+          "Battlestar Galactica (Classic), Season 1"
+        ],
+        [
+          "Greatest Hits"
+        ],
+        [
+          "Heroes, Season 1"
+        ],
+        [
+          "Instant Karma: The Amnesty International Campaign to Save Darfur"
+        ],
+        [
+          "International Superhits"
+        ],
+        [
+          "Lost, Season 1"
+        ],
+        [
+          "Lost, Season 2"
+        ],
+        [
+          "Lost, Season 3"
+        ],
+        [
+          "Minha Historia"
+        ],
+        [
+          "My Way: The Best Of Frank Sinatra [Disc 1]"
+        ],
+        [
+          "The Office, Season 2"
+        ],
+        [
+          "The Office, Season 3"
+        ],
+        [
+          "Unplugged"
+        ],
+        [
+          "Up An' Atom"
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "M4",
+      "difficulty": "Medium",
+      "question": "Which employees support the most customers?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT E.EmployeeId, E.FirstName, E.LastName, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId, E.FirstName, E.LastName\nORDER BY NumCustomersSupported DESC",
+      "final_sql": "SELECT E.EmployeeId, E.FirstName, E.LastName, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId, E.FirstName, E.LastName\nORDER BY NumCustomersSupported DESC",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 13.33,
+      "actual_result": [
+        [
+          3,
+          "Jane",
+          "Peacock",
+          21
+        ],
+        [
+          4,
+          "Margaret",
+          "Park",
+          20
+        ],
+        [
+          5,
+          "Steve",
+          "Johnson",
+          18
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "M5",
+      "difficulty": "Medium",
+      "question": "What are the top 3 best-selling genres by revenue?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT G.Name, SUM(T.UnitPrice * T.Bytes) AS TotalRevenue\nFROM Track T\nJOIN Genre G ON T.GenreId = G.GenreId\nGROUP BY G.Name\nORDER BY TotalRevenue DESC\nLIMIT 3",
+      "final_sql": "SELECT G.Name, SUM(T.UnitPrice * T.Bytes) AS TotalRevenue\nFROM Track T\nJOIN Genre G ON T.GenreId = G.GenreId\nGROUP BY G.Name\nORDER BY TotalRevenue DESC\nLIMIT 3",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 11.32,
+      "actual_result": [
+        [
+          "Drama",
+          64564765687.27001
+        ],
+        [
+          "TV Shows",
+          62972228697.70999
+        ],
+        [
+          "Sci Fi & Fantasy",
+          27573820249.199997
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "H1",
+      "difficulty": "Hard",
+      "question": "Which artists have tracks in more than 2 genres?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT A.Name \nFROM Artist AS A \nJOIN Track AS T ON A.ArtistId = T.ArtistId \nGROUP BY A.Name \nHAVING COUNT(DISTINCT T.GenreId) > 2",
+      "final_sql": "SELECT A.Name \nFROM Artist AS A \nJOIN Track AS T ON A.ArtistId = T.ArtistId \nJOIN Genre AS G ON T.GenreId = G.GenreId \nGROUP BY A.Name \nHAVING COUNT(DISTINCT G.GenreId) > 2",
+      "raw_parsable": true,
+      "effectively_parsable": false,
+      "execution_accurate": false,
+      "post_processing_applied": true,
+      "retry_count": 3,
+      "latency_seconds": 62.21,
+      "actual_result": null,
+      "error": "(sqlite3.OperationalError) no such column: T.ArtistId\n[SQL: SELECT A.Name \nFROM Artist AS A \nJOIN Track AS T ON A.ArtistId = T.ArtistId \nJOIN Genre AS G ON T.GenreId = G.GenreId \nGROUP BY A.Name \nHAVING COUNT(DISTINCT G.GenreId) > 2]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)",
+      "error_category": "schema_linking"
+    },
+    {
+      "query_id": "H2",
+      "difficulty": "Hard",
+      "question": "Find customers who have never purchased a Jazz track",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT c.*\nFROM Customer c\nWHERE c.CustomerId NOT IN (\n  SELECT ct.TrackId\n  FROM Track t\n  JOIN PlaylistTrack pt ON t.TrackId = pt.TrackId\n  JOIN Genre g ON t.GenreId = g.GenreId\n  WHERE g.Name = 'Jazz'\n)",
+      "final_sql": "SELECT c.*\nFROM Customer c\nWHERE c.CustomerId NOT IN (\n  SELECT t.TrackId\n  FROM Track t\n  JOIN PlaylistTrack pt ON t.TrackId = pt.TrackId\n  JOIN Genre g ON t.GenreId = g.GenreId\n  WHERE g.Name = 'Jazz'\n)",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": true,
+      "retry_count": 1,
+      "latency_seconds": 42.01,
+      "actual_result": [
+        [
+          1,
+          "Lu\u00eds",
+          "Gon\u00e7alves",
+          "Embraer - Empresa Brasileira de Aeron\u00e1utica S.A.",
+          "Av. Brigadeiro Faria Lima, 2170",
+          "S\u00e3o Jos\u00e9 dos Campos",
+          "SP",
+          "Brazil",
+          "12227-000",
+          "+55 (12) 3923-5555",
+          "+55 (12) 3923-5566",
+          "luisg@embraer.com.br",
+          3
+        ],
+        [
+          2,
+          "Leonie",
+          "K\u00f6hler",
+          null,
+          "Theodor-Heuss-Stra\u00dfe 34",
+          "Stuttgart",
+          null,
+          "Germany",
+          "70174",
+          "+49 0711 2842222",
+          null,
+          "leonekohler@surfeu.de",
+          5
+        ],
+        [
+          3,
+          "Fran\u00e7ois",
+          "Tremblay",
+          null,
+          "1498 rue B\u00e9langer",
+          "Montr\u00e9al",
+          "QC",
+          "Canada",
+          "H2G 1A7",
+          "+1 (514) 721-4711",
+          null,
+          "ftremblay@gmail.com",
+          3
+        ],
+        [
+          4,
+          "Bj\u00f8rn",
+          "Hansen",
+          null,
+          "Ullev\u00e5lsveien 14",
+          "Oslo",
+          null,
+          "Norway",
+          "0171",
+          "+47 22 44 22 22",
+          null,
+          "bjorn.hansen@yahoo.no",
+          4
+        ],
+        [
+          5,
+          "Franti\u0161ek",
+          "Wichterlov\u00e1",
+          "JetBrains s.r.o.",
+          "Klanova 9/506",
+          "Prague",
+          null,
+          "Czech Republic",
+          "14700",
+          "+420 2 4172 5555",
+          "+420 2 4172 5555",
+          "frantisekw@jetbrains.com",
+          4
+        ],
+        [
+          6,
+          "Helena",
+          "Hol\u00fd",
+          null,
+          "Rilsk\u00e1 3174/6",
+          "Prague",
+          null,
+          "Czech Republic",
+          "14300",
+          "+420 2 4177 0449",
+          null,
+          "hholy@gmail.com",
+          5
+        ],
+        [
+          7,
+          "Astrid",
+          "Gruber",
+          null,
+          "Rotenturmstra\u00dfe 4, 1010 Innere Stadt",
+          "Vienne",
+          null,
+          "Austria",
+          "1010",
+          "+43 01 5134505",
+          null,
+          "astrid.gruber@apple.at",
+          5
+        ],
+        [
+          8,
+          "Daan",
+          "Peeters",
+          null,
+          "Gr\u00e9trystraat 63",
+          "Brussels",
+          null,
+          "Belgium",
+          "1000",
+          "+32 02 219 03 03",
+          null,
+          "daan_peeters@apple.be",
+          4
+        ],
+        [
+          9,
+          "Kara",
+          "Nielsen",
+          null,
+          "S\u00f8nder Boulevard 51",
+          "Copenhagen",
+          null,
+          "Denmark",
+          "1720",
+          "+453 3331 9991",
+          null,
+          "kara.nielsen@jubii.dk",
+          4
+        ],
+        [
+          10,
+          "Eduardo",
+          "Martins",
+          "Woodstock Discos",
+          "Rua Dr. Falc\u00e3o Filho, 155",
+          "S\u00e3o Paulo",
+          "SP",
+          "Brazil",
+          "01007-010",
+          "+55 (11) 3033-5446",
+          "+55 (11) 3033-4564",
+          "eduardo@woodstock.com.br",
+          4
+        ],
+        [
+          11,
+          "Alexandre",
+          "Rocha",
+          "Banco do Brasil S.A.",
+          "Av. Paulista, 2022",
+          "S\u00e3o Paulo",
+          "SP",
+          "Brazil",
+          "01310-200",
+          "+55 (11) 3055-3278",
+          "+55 (11) 3055-8131",
+          "alero@uol.com.br",
+          5
+        ],
+        [
+          12,
+          "Roberto",
+          "Almeida",
+          "Riotur",
+          "Pra\u00e7a Pio X, 119",
+          "Rio de Janeiro",
+          "RJ",
+          "Brazil",
+          "20040-020",
+          "+55 (21) 2271-7000",
+          "+55 (21) 2271-7070",
+          "roberto.almeida@riotur.gov.br",
+          3
+        ],
+        [
+          13,
+          "Fernanda",
+          "Ramos",
+          null,
+          "Qe 7 Bloco G",
+          "Bras\u00edlia",
+          "DF",
+          "Brazil",
+          "71020-677",
+          "+55 (61) 3363-5547",
+          "+55 (61) 3363-7855",
+          "fernadaramos4@uol.com.br",
+          4
+        ],
+        [
+          14,
+          "Mark",
+          "Philips",
+          "Telus",
+          "8210 111 ST NW",
+          "Edmonton",
+          "AB",
+          "Canada",
+          "T6G 2C7",
+          "+1 (780) 434-4554",
+          "+1 (780) 434-5565",
+          "mphilips12@shaw.ca",
+          5
+        ],
+        [
+          15,
+          "Jennifer",
+          "Peterson",
+          "Rogers Canada",
+          "700 W Pender Street",
+          "Vancouver",
+          "BC",
+          "Canada",
+          "V6C 1G8",
+          "+1 (604) 688-2255",
+          "+1 (604) 688-8756",
+          "jenniferp@rogers.ca",
+          3
+        ],
+        [
+          16,
+          "Frank",
+          "Harris",
+          "Google Inc.",
+          "1600 Amphitheatre Parkway",
+          "Mountain View",
+          "CA",
+          "USA",
+          "94043-1351",
+          "+1 (650) 253-0000",
+          "+1 (650) 253-0000",
+          "fharris@google.com",
+          4
+        ],
+        [
+          17,
+          "Jack",
+          "Smith",
+          "Microsoft Corporation",
+          "1 Microsoft Way",
+          "Redmond",
+          "WA",
+          "USA",
+          "98052-8300",
+          "+1 (425) 882-8080",
+          "+1 (425) 882-8081",
+          "jacksmith@microsoft.com",
+          5
+        ],
+        [
+          18,
+          "Michelle",
+          "Brooks",
+          null,
+          "627 Broadway",
+          "New York",
+          "NY",
+          "USA",
+          "10012-2612",
+          "+1 (212) 221-3546",
+          "+1 (212) 221-4679",
+          "michelleb@aol.com",
+          3
+        ],
+        [
+          19,
+          "Tim",
+          "Goyer",
+          "Apple Inc.",
+          "1 Infinite Loop",
+          "Cupertino",
+          "CA",
+          "USA",
+          "95014",
+          "+1 (408) 996-1010",
+          "+1 (408) 996-1011",
+          "tgoyer@apple.com",
+          3
+        ],
+        [
+          20,
+          "Dan",
+          "Miller",
+          null,
+          "541 Del Medio Avenue",
+          "Mountain View",
+          "CA",
+          "USA",
+          "94040-111",
+          "+1 (650) 644-3358",
+          null,
+          "dmiller@comcast.com",
+          4
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "H3",
+      "difficulty": "Hard",
+      "question": "What is the average invoice total by country, only for countries with more than 5 customers?",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT \n    BillingCountry,\n    AVG(Total) AS AverageInvoiceTotal\nFROM Invoice\nGROUP BY BillingCountry\nHAVING COUNT(DISTINCT CustomerId) > 5",
+      "final_sql": "SELECT \n    BillingCountry,\n    AVG(Total) AS AverageInvoiceTotal\nFROM Invoice\nGROUP BY BillingCountry\nHAVING COUNT(DISTINCT CustomerId) > 5",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 16.97,
+      "actual_result": [
+        [
+          "Canada",
+          5.427857142857142
+        ],
+        [
+          "USA",
+          5.747912087912091
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    },
+    {
+      "query_id": "H4",
+      "difficulty": "Hard",
+      "question": "List the top 3 playlists by total track duration in hours",
+      "model": "llama3.1:8b",
+      "raw_sql": "SELECT \n    p.Name,\n    SUM((t.Milliseconds / 3600.0)) AS TotalDurationHours\nFROM \n    PlaylistTrack pt\nJOIN \n    Track t ON pt.TrackId = t.TrackId\nJOIN \n    Playlist p ON pt.PlaylistId = p.PlaylistId\nGROUP BY \n    p.Name\nORDER BY \n    TotalDurationHours DESC\nLIMIT 3",
+      "final_sql": "SELECT \n    p.Name,\n    SUM((t.Milliseconds / 3600.0)) AS TotalDurationHours\nFROM \n    PlaylistTrack pt\nJOIN \n    Track t ON pt.TrackId = t.TrackId\nJOIN \n    Playlist p ON pt.PlaylistId = p.PlaylistId\nGROUP BY \n    p.Name\nORDER BY \n    TotalDurationHours DESC\nLIMIT 3",
+      "raw_parsable": true,
+      "effectively_parsable": true,
+      "execution_accurate": false,
+      "post_processing_applied": false,
+      "retry_count": 0,
+      "latency_seconds": 23.51,
+      "actual_result": [
+        [
+          "Music",
+          487601.7127777749
+        ],
+        [
+          "TV Shows",
+          278386.087222222
+        ],
+        [
+          "90\u2019s Music",
+          110751.43138888894
+        ]
+      ],
+      "error": null,
+      "error_category": "logic"
+    }
+  ]
+}
