@@ -39,6 +39,17 @@
 - **Proposed Solution:** Add `docs/checkpoints/` to the standard project directory structure in DSM_0, alongside `docs/plans/` and `docs/decisions/`.
 - **Evidence:** We followed DSM_0 to set up our directory structure, then discovered we needed `docs/checkpoints/` when creating the setup milestone checkpoint.
 
+### Define intra-sprint documentation cadence in PM Guidelines and sprint plan templates
+- **DSM Section:** DSM_2.0_ProjectManagement_Guidelines_v2_v1.1.md (Template 5: Checkpoints) + Section 6.4.1 (Milestone Checkpoints)
+- **Problem:** DSM defines documentation checkpoints at **sprint boundaries** (CLAUDE.md: "Follow the sprint boundary checklist: checkpoint, feedback files, decision log, blog entry"). But sprints with multiple phases have natural internal milestones (e.g., Phase 1 → Phase 2 transition) where documentation should also happen. The DSM is silent about this intra-sprint cadence, and neither the PM Guidelines nor the sprint plan template prompts the user to include documentation steps at phase boundaries.
+- **What happened:** Our setup checkpoint explicitly stated *"Next checkpoint: After Sprint 1 Phase 1 completion."* Our sprint plan defined Phase 1 with a "Readiness for Phase 2" checklist — but the checklist was purely technical (Ollama responds, database loads, models pulled). No documentation step was included. As a result, we completed Phase 1, moved straight into Phase 2, built all 5 agent nodes, and only then realized we hadn't documented Phase 1 completion. The checkpoint, methodology update, decision record (DEC-003), and blog materials were all created retroactively in the middle of Phase 2.
+- **Root cause (dual):** (1) The sprint plan didn't include documentation as a phase activity because the template doesn't prompt for it. (2) The DSM only mandates checkpoints at sprint boundaries, not at phase boundaries, so there was no trigger to pause and document.
+- **Proposed Solution:** Two changes:
+  1. **PM Guidelines — Sprint Plan Template:** Add a standard "Phase Boundary Checklist" section to each phase definition that includes: `[ ] Update methodology.md`, `[ ] Create checkpoint if significant milestone`, `[ ] Log any new decisions to docs/decisions/`, `[ ] Update blog materials`. This makes documentation a planned activity, not an afterthought.
+  2. **PM Guidelines — Section 6.4.1:** Clarify that checkpoints should occur at significant milestones within a sprint, not only at sprint boundaries. Add guidance: "If a sprint has multiple phases, consider a lightweight checkpoint at each phase transition."
+- **Evidence:** Phase 1 completed (Cells 1-7), Phase 2 nodes built (Cells 8-16), but documentation was only triggered by the user noticing the gap mid-Phase 2. The retroactive checkpoint covered both phases at once, losing the clean Phase 1 → Phase 2 transition record. A planned documentation step would have caught this.
+- **Impact:** Without intra-sprint documentation cadence, progress is either undocumented until sprint end (losing detail) or documented retroactively (losing accuracy). Both reduce the value of the feedback loop that DSM is designed to create.
+
 ---
 
 ## Low Priority

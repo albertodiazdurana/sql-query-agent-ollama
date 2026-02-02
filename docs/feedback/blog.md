@@ -19,10 +19,15 @@ Track blog materials collected during the project and evaluate how well the DSM 
 | Material | Description | Status |
 |----------|-------------|--------|
 | Research findings | Text-to-SQL state of the art survey | Collected |
-| Architecture decisions | LangGraph graph design, schema filtering rationale | Pending |
-| Model comparison results | sqlcoder:7b vs llama3.1:8b evaluation | Pending |
-| Error patterns | Common failure modes and how the agent handles them | Pending |
+| Architecture decisions | LangGraph graph design, schema filtering rationale | Collected |
+| Prompt format discovery | sqlcoder:7b empty response with generic prompts, fix via model-aware routing | Collected |
+| Model comparison (initial) | sqlcoder faster (4s) but ID-only results; llama3.1 slower (17s) but JOINs for names | Collected |
+| Model comparison results | Full systematic evaluation on test suite | Pending |
+| Error patterns | Common failure modes and how the agent handles them | Partially collected |
+| Error repair observation | handle_error successfully repairs bad SQL but with high latency (~62s) | Collected |
 | Screenshots/outputs | Notebook outputs, evaluation tables | Pending |
+| Node-by-node build approach | Built and tested 5 nodes individually before wiring graph — caught prompt issue early | Collected |
+| Personal touch: genre exploration | Author likes heavy metal, metal, and blues — used the agent to explore these genres in Chinook. Fun angle for blog narrative | Pending |
 
 ### Sprint 2
 
