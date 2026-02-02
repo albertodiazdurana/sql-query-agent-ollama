@@ -210,6 +210,18 @@ python data/experiments/s01_d02_exp001/run_experiment.py llama3.1:8b
 
 The evaluation harness ([`scripts/eval_harness.py`](scripts/eval_harness.py)) is model-agnostic and reusable across experiments. Experiment artifacts (runner scripts, result JSONs, documentation) follow a consistent folder structure under `data/experiments/`.
 
+## Development Methodology
+
+This project serves as the first case study for the [Data Science Methodology (DSM)](https://github.com/albertodiazdurana/agentic-ai-data-science-methodology), a structured collaboration framework for AI-assisted data science and software engineering projects. DSM provides the scaffolding for how humans and AI agents work together — from sprint planning and experiment design to decision-making and knowledge capture. This project both applies DSM and feeds observations back to improve it. DSM shapes how this project is organized:
+
+- **Decision log** ([`docs/decisions/`](docs/decisions/)) — Numbered records (DEC-001 through DEC-005) capturing architectural choices with context, alternatives considered, and rationale. Decisions are referenced throughout the codebase.
+- **Experiment templates** — Each evaluation follows a structured template with pre-defined hypotheses, rejection criteria, metrics, and limitation discovery (see [EXP-001](data/experiments/s01_d02_exp001/README.md)).
+- **Limitation registries** — Experiments produce numbered limitations (LIM-###) with severity and disposition, feeding directly into the next sprint's backlog.
+- **Sprint boundary checklists** — Checkpoints ([`docs/checkpoints/`](docs/checkpoints/)), methodology feedback ([`docs/feedback/`](docs/feedback/)), and blog materials ([`docs/blog/`](docs/blog/)) are produced at each sprint boundary.
+- **Methodology feedback loop** — The project feeds observations back to DSM itself via `docs/feedback/methodology.md` and `docs/feedback/backlogs.md`, improving the methodology for future projects.
+
+The project uses **DSM 1.0** (Data Science Collaboration) for Sprint 1 notebook experimentation and **DSM 4.0** (Software Engineering Adaptation) for Sprint 2 application development.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
