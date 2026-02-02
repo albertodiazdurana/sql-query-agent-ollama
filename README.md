@@ -70,18 +70,29 @@ Key design decisions:
 - [x] **Sprint 1, Phase 3**: Evaluation framework — 14-query test suite, 2-model comparison, model selection ([EXP-001](data/experiments/s01_d02_exp001/README.md))
 - [ ] **Sprint 2**: Streamlit application
 
-### Evaluation Results (Sprint 1, Phase 3)
+### EXP-001: Model Comparison (Sprint 1, Phase 3)
 
-EXP-001 compared `sqlcoder:7b` and `llama3.1:8b` on a 14-query test suite (5 Easy, 5 Medium, 4 Hard):
+EXP-001 compared `sqlcoder:7b` (SQL-specialized fine-tune) against `llama3.1:8b` (general-purpose) using a hypothesis-driven approach with pre-defined rejection criteria.
+
+**Hypotheses tested:**
+- **H1:** SQL fine-tuning yields higher Execution Accuracy (research predicts +15-20%) — **Rejected** (equal EX)
+- **H2:** General-purpose model produces more readable SQL — **Partially confirmed**
+- **H3:** Fine-tuned model needs more dialect post-processing — **Inconclusive** (measurement limitation)
+
+**Test suite:** 14 queries across 3 difficulty tiers, each with pre-computed ground truth:
+- **Easy (5):** Single table, simple WHERE, basic aggregation (e.g., "How many employees are there?")
+- **Medium (5):** JOINs, GROUP BY + HAVING, ORDER BY + LIMIT (e.g., "Which genre has the most tracks?")
+- **Hard (4):** Multi-table JOINs, subqueries, complex aggregation (e.g., "Find customers who have never purchased a Jazz track")
+
+**Results:**
 
 | Metric | sqlcoder:7b | llama3.1:8b |
 |--------|-------------|-------------|
 | Execution Accuracy | 42.9% (6/14) | 42.9% (6/14) |
 | Raw Parsability | 85.7% (12/14) | **100% (14/14)** |
+| Effective Parsability | 64.3% (9/14) | **92.9% (13/14)** |
 | Table Hallucination | 2 instances | **0 instances** |
 | Avg Latency | 30.3s | **17.6s** |
-
-**Key finding:** SQL fine-tuning did not improve accuracy over a general-purpose model at the 7-8B scale. `llama3.1:8b` is recommended for its reliability (zero hallucination, 100% parsability) and speed.
 
 | Difficulty | sqlcoder:7b | llama3.1:8b |
 |------------|-------------|-------------|
@@ -89,7 +100,13 @@ EXP-001 compared `sqlcoder:7b` and `llama3.1:8b` on a 14-query test suite (5 Eas
 | Medium (5) | 40% | 20% |
 | Hard (4) | 0% | 0% |
 
-See the [full experiment report](data/experiments/s01_d02_exp001/README.md) and [PLAN.md](docs/plans/PLAN.md) for the development roadmap.
+**Error analysis:** Failures were categorized using a 6-category hierarchy (schema linking → syntax → dialect → hallucination → logic → unknown). sqlcoder:7b's failures were diverse (hallucination, runtime, dialect), while llama3.1:8b's were predominantly logic errors — a more predictable failure mode.
+
+**Key finding:** SQL fine-tuning did not improve accuracy over a general-purpose model at the 7-8B scale. `llama3.1:8b` is recommended for its reliability (zero hallucination, 100% parsability) and speed. See [DEC-005](docs/decisions/DEC-005_model-selection-llama3-1-8b.md).
+
+**Limitations discovered (6):** Each experiment produces a structured limitation registry (LIM-001 through LIM-006), tracking severity, type, and disposition. Key limitations include 0% Hard query accuracy (LIM-001), table hallucination in sqlcoder (LIM-002), and no few-shot examples in prompts (LIM-006). These feed directly into Sprint 2's improvement backlog.
+
+See the [full experiment report](data/experiments/s01_d02_exp001/README.md) for per-query results, error pattern analysis, and evaluation design decisions. See [PLAN.md](docs/plans/PLAN.md) for the development roadmap.
 
 ## Getting Started
 
@@ -146,17 +163,52 @@ sql-query-agent-ollama/
 └── README.md
 ```
 
-## Evaluation
+## Evaluation Framework
 
-The project includes a systematic evaluation framework comparing models on:
+The project uses a systematic, hypothesis-driven evaluation approach adapted from the [Spider benchmark](https://yale-lily.github.io/spider) methodology. Each experiment follows a structured template:
+
+1. **Hypotheses** defined before testing, with explicit rejection criteria
+2. **Curated test suite** organized by difficulty (Easy / Medium / Hard), with pre-computed ground truth
+3. **6 quantitative metrics** tracked per model per query
+4. **Structured error categorization** classifying failures into actionable categories
+5. **Limitation discovery** producing a numbered registry (LIM-###) that feeds into the next sprint's backlog
+
+### Metrics
 
 | Metric | Description |
 |--------|-------------|
-| Execution Accuracy | Does the query return correct results? |
-| Parsability Rate | % of valid SQL on first attempt |
-| Retry Rate | How often error correction is needed |
+| Execution Accuracy (EX) | Does the query return correct results? (adapted from Spider EX) |
+| Raw Parsability | % of syntactically valid SQL before post-processing |
+| Effective Parsability | % of valid SQL after post-processing, on first attempt |
+| Retry Rate | How often the self-correction loop is needed |
+| Post-Processing Rate | % of queries needing dialect normalization |
 | Latency | Time from question to answer |
-| Error Categorization | Schema linking / syntax / logic / hallucination |
+
+### Error Categories
+
+Failures are classified using a priority-ordered hierarchy — more specific categories take precedence:
+
+| Category | Definition | Actionable fix |
+|----------|------------|----------------|
+| Schema linking | Wrong table or column referenced | Better schema filtering |
+| Syntax | Invalid SQL that fails parsing | Prompt engineering |
+| Dialect | PostgreSQL syntax in SQLite context | Post-processing rules |
+| Hallucination | References non-existent tables/columns | Schema-aware validation |
+| Logic | Valid SQL, executes, but wrong results | Few-shot examples, reasoning |
+| Unknown | None of the above | Manual analysis |
+
+### Reproducibility
+
+Experiments are fully reproducible via scripts:
+
+```bash
+# Run evaluation for a specific model
+python data/experiments/s01_d02_exp001/run_experiment.py llama3.1:8b
+
+# Results saved as JSON with per-query metrics
+```
+
+The evaluation harness ([`scripts/eval_harness.py`](scripts/eval_harness.py)) is model-agnostic and reusable across experiments. Experiment artifacts (runner scripts, result JSONs, documentation) follow a consistent folder structure under `data/experiments/`.
 
 ## Contributing
 
