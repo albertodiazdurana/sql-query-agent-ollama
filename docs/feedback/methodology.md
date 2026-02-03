@@ -350,13 +350,24 @@
 - **Reasoning:** Clarity 5 — sprint deliverables were unambiguous. Applicability 5 — the pattern (notebook → extraction → ablation → UI → container) is reusable. Completeness 5 — all MUST requirements met. Efficiency 4 — some rework on FK key structure, but caught quickly.
 - **Recommendation:** (1) Document "notebook-to-app" pattern in DSM 4.0 as a migration workflow. (2) Make ablation studies standard before production deployment. (3) Add "deployment packaging" (Docker, etc.) as a recommended phase in app development sprints.
 
+### Entry 22: LinkedIn Posts Don't Support Rich Text Formatting
+- **Date:** 2026-02-03 | **Sprint:** S2 Final | **Type:** Gap
+- **Context:** When preparing Blog Part 3 LinkedIn post, used markdown formatting (**bold**, bullet points) in the draft file. LinkedIn does not render markdown — posts appear as plain text.
+- **Finding:** LinkedIn post drafts should use plain text formatting, not markdown.
+  - **What happened:** The linkedin-post-s02-ablation.md file contains `**bold**` markers that won't render on LinkedIn.
+  - **Impact:** Minor — the post still works, but the formatting intent is lost.
+  - **Better approach:** Use CAPS for emphasis, line breaks for structure, and emoji sparingly for visual hierarchy in LinkedIn posts.
+- **Scores:** Clarity 4, Applicability 5, Completeness 2, Efficiency 3 (Avg: 3.5)
+- **Reasoning:** Clarity 4 — the limitation is now documented. Applicability 5 — affects all future LinkedIn posts. Completeness 2 — DSM blog materials template doesn't mention platform-specific formatting. Efficiency 3 — minor friction, easy to work around.
+- **Recommendation:** (1) Add note to DSM blog materials template: "LinkedIn posts: use plain text, CAPS for emphasis, line breaks for structure — markdown not supported." (2) Consider separate templates for GitHub blog (markdown) vs LinkedIn post (plain text).
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 21 |
+| Entries logged | 22 |
 | Average score | 3.3 / 5 |
-| Gaps found | 11 |
+| Gaps found | 12 |
 | Pain points | 3 |
 | Successes | 7 |
 
