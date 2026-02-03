@@ -42,7 +42,7 @@
 
 ## Blog Part 3: Ablation Study (Ready to Write)
 
-**Working Title:** "What 84 Experiments Taught Me About Prompt Engineering — And Why the Research Was Wrong"
+**Working Title:** "What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer"
 
 ### Hook: Counter-Intuitive Results
 

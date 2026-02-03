@@ -6,9 +6,9 @@
 
 I ran 84 experiments to validate "best practices" for prompt engineering.
 
-The research said: add few-shot examples (+10-15% accuracy), use chain-of-thought reasoning, filter irrelevant schema.
+The literature recommends: add few-shot examples (+10-15% accuracy), use chain-of-thought reasoning, filter irrelevant schema.
 
-My data said: all of that made things worse.
+For my 8B local model? None of that transferred.
 
 Here's what happened when I tested 6 prompt configurations on my text-to-SQL agent:
 
@@ -17,7 +17,7 @@ Here's what happened when I tested 6 prompt configurations on my text-to-SQL age
 - Few-shot + full schema: 36% (-14pp)
 - Chain-of-thought: 29% (-21pp)
 
-The simplest approach beat every "sophisticated" technique.
+The simplest approach outperformed the more complex techniques.
 
 **Why few-shot hurt:**
 My examples (employee count, album lookup) anchored the model on wrong patterns. When it saw a genre question, it pattern-matched to the simple example instead of figuring out the JOIN it actually needed.

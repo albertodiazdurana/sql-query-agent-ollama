@@ -1,4 +1,4 @@
-# What 84 Experiments Taught Me About Prompt Engineering — And Why the Research Was Wrong
+# What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer
 
 *Part 3 of a series on building a text-to-SQL agent while testing a human-AI collaboration methodology*
 
@@ -6,7 +6,7 @@
 
 The literature is clear: add few-shot examples to your prompts (+10-15% accuracy) [1], use chain-of-thought reasoning for complex tasks [2], and filter irrelevant context to reduce noise [3]. I ran 84 experiments to validate these assumptions before shipping my text-to-SQL agent.
 
-The data said the opposite.
+For my setup, the results were different.
 
 ## The Setup
 
@@ -41,7 +41,7 @@ I was ready to implement few-shot as the default. The ablation was just validati
 
 Wait, what?
 
-**Zero-shot with full schema won.** The simplest approach — just ask the question with all tables — beat every "sophisticated" technique.
+**Zero-shot with full schema won.** The simplest approach — just ask the question with all tables — outperformed the more complex techniques.
 
 ## What Went Wrong (For the Techniques)
 
@@ -77,7 +77,7 @@ The techniques that work for GPT-4 and larger models may not transfer to 8B loca
 
 ## What I Would Have Shipped Without This Data
 
-If I'd trusted the literature and skipped the ablation:
+If I'd applied the literature recommendations without local testing:
 
 - **Few-shot prompt** as default → 36% accuracy instead of 50%
 - **Schema filtering** enabled → 43% instead of 50%

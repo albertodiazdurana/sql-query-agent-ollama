@@ -318,7 +318,7 @@ The project uses **DSM 1.0** (Data Science Collaboration) for Sprint 1 notebook 
 
 - **Part 1:** [Two Experiments in Parallel: Building a Text-to-SQL Agent While Testing a Collaboration Methodology](docs/blog/blog-s01.md) — From notebook exploration to structured evaluation. Covers the research-driven architecture, model comparison (sqlcoder vs llama3.1), and what we learned from running two experiments at once.
 - **Part 2:** [The Case for Human-Agent Collaboration: What 28 Test Outputs Taught Me About Cognitive Limits](docs/blog/blog-s02-collaboration-value.md) — Why structured human-AI workflows catch errors that automation misses.
-- **Part 3:** *Ready to write* — "What 84 Experiments Taught Me About Prompt Engineering" — Counter-intuitive ablation study findings (few-shot and CoT hurt performance).
+- **Part 3:** [What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer](docs/blog/blog-s02-ablation.md) — Counter-intuitive ablation study findings (few-shot and CoT hurt performance).
 - **Part 4:** *Ready to write* — "Shipping a Local-First AI App" — From notebook prototype to Docker-deployed application.
 
 ## Contributing
