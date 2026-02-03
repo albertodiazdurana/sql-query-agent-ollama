@@ -79,21 +79,50 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 
 ---
 
-### Phase 2: Agent Improvements (Execution mode: script)
+### Phase 2: Ablation Study & Evaluation Rigor (Execution mode: script)
 
-**Objective:** Add few-shot examples (LIM-006) and validate accuracy improvement.
+**Objective:** Systematic ablation study to measure the impact of prompt engineering choices. Demonstrates reproducible ML experiments and evaluation pipelines that support fast iteration.
+
+**Ablation Matrix:**
+
+| Experiment | Variable | Values | Runs |
+|------------|----------|--------|------|
+| E1: Prompt Structure | Template | Zero-shot (baseline), Few-shot, Chain-of-thought | 3 × 14 = 42 |
+| E2: Few-shot Selection | Example count | 0, 2, 3 examples | 3 × 14 = 42 |
+| E3: Schema Context | Context amount | Full schema, Selective (relevant tables only) | 2 × 14 = 28 |
+
+**Total runs:** ~112 (with overlap reduction: ~56 unique configurations)
 
 **Activities:**
-1. Add few-shot example selection to `generate_sql` prompt — 2-3 static examples per difficulty level, embedded from Sprint 1's `sample_rows` data
-2. Store `raw_sql` (before post-processing) and `final_sql` (after) in AgentState — enables accurate metrics
-3. Re-run evaluation using existing `scripts/eval_harness.py` + adapted runner against new modular agent
-4. Compare results with Sprint 1 baseline (EXP-001)
-5. Document as EXP-002 if results differ significantly
+1. **Prompt variants in config.py:**
+   - `ZERO_SHOT_PROMPT` (current baseline)
+   - `FEW_SHOT_PROMPT` (2-3 static examples from Sprint 1 test set)
+   - `COT_PROMPT` (chain-of-thought: reasoning before SQL)
+2. **Schema context variants:**
+   - Full schema (current)
+   - Selective schema (filter to question-relevant tables)
+3. **Ablation runner script:** `scripts/run_ablation.py`
+   - Iterates over prompt × schema × example configurations
+   - Logs all results to `data/experiments/s02_ablation/`
+   - Produces comparison table
+4. **Metrics tracked:**
+   - Execution Accuracy (EX) — primary
+   - Syntax Validity (VV) — secondary
+   - Latency (ms) — informational
+5. **Document as EXP-002** with ablation findings and best configuration
+
+**Key files:**
+- `app/config.py` — prompt variants
+- `scripts/run_ablation.py` — ablation experiment runner
+- `data/experiments/s02_ablation/` — results folder
 
 **Readiness for Phase 3:**
-- [ ] Few-shot examples in prompts (LIM-006 resolved)
-- [ ] Raw vs final SQL tracked in state (LIM-003 metrics fix confirmed)
-- [ ] Agent accuracy validated (EX >= Sprint 1 baseline of 42.9%)
+- [ ] Prompt variants implemented (zero-shot, few-shot, CoT)
+- [ ] Schema context variants implemented (full, selective)
+- [ ] Ablation runner script working
+- [ ] All ablation runs complete with results logged
+- [ ] Best configuration identified (EX improvement over baseline)
+- [ ] EXP-002 documented with comparison table
 
 ---
 
@@ -148,10 +177,12 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 ## Priority Breakdown
 
 ### MUST
-- [ ] Extract notebook code into `app/` modules (config, database, agent)
-- [ ] Separate post-processing into own graph node (LIM-003)
-- [ ] Add few-shot examples to prompts (LIM-006)
-- [ ] pytest tests for database and agent modules
+- [x] Extract notebook code into `app/` modules (config, database, agent) ✓ Phase 1
+- [x] Separate post-processing into own graph node (LIM-003) ✓ Phase 1
+- [x] pytest tests for database and agent modules ✓ Phase 1
+- [ ] Ablation study: prompt variants (zero-shot, few-shot, CoT)
+- [ ] Ablation study: schema context variants (full, selective)
+- [ ] Ablation runner script with reproducible experiment logging
 - [ ] Streamlit UI with NL input → SQL → results flow
 - [ ] Ollama availability check
 - [ ] Database selector (Chinook default + SQLite upload)
@@ -162,7 +193,7 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 - [ ] Schema viewer in sidebar
 - [ ] CSV export
 - [ ] Query history in sidebar
-- [ ] Re-run evaluation to measure improvement (EXP-002)
+- [ ] EXP-002 documentation with ablation comparison table
 
 ### COULD
 - [ ] Query approval before execution (human-in-the-loop)
@@ -177,11 +208,12 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 | Criterion | Target | Measurement |
 |-----------|--------|-------------|
 | App functional | NL → SQL → results via Streamlit | Manual testing |
-| Agent accuracy | >= Sprint 1 baseline (42.9% EX) | EXP-002 eval run |
-| Few-shot impact | Measurable EX improvement vs baseline | Before/after comparison |
+| Ablation complete | All 3 experiments run (prompt, few-shot, schema) | Results in `s02_ablation/` |
+| Agent accuracy | >= Sprint 1 baseline (42.9% EX) | Best ablation config |
+| Ablation impact | Identify best prompt configuration | Comparison table |
 | Test coverage | pytest tests for database + agent modules | `pytest tests/` passes |
 | Error handling | Graceful handling of 3 error types | Manual testing |
-| LIM-003 fixed | Raw vs final SQL tracked separately | State inspection |
+| Reproducibility | All experiments logged with config + results | Experiment artifacts |
 
 ---
 
@@ -190,10 +222,13 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 | File | Purpose | Phase |
 |------|---------|-------|
 | `app/__init__.py` | Package marker | 1 |
-| `app/config.py` | Configuration, prompts, constants | 1 |
+| `app/config.py` | Configuration, prompts, constants | 1, 2 |
 | `app/database.py` | DB engine, schema, post-processing | 1 |
 | `app/agent.py` | AgentState, nodes, graph builder | 1 |
 | `app/main.py` | Streamlit entry point | 3 |
+| `scripts/run_ablation.py` | Ablation experiment runner | 2 |
+| `data/experiments/s02_ablation/` | Ablation results folder | 2 |
+| `docs/research/ablation-study-design.md` | Research findings on ablation methodology | 2 |
 | `tests/conftest.py` | Shared test fixtures | 1 |
 | `tests/test_database.py` | Database module tests | 1 |
 | `tests/test_agent.py` | Agent module tests | 1 |
@@ -203,6 +238,6 @@ Build a Streamlit web application from the Sprint 1 notebook prototype. Extract 
 ## Verification
 
 1. **Phase 1:** `python -c "from app.agent import build_agent; print('OK')"` + `pytest tests/`
-2. **Phase 2:** Run evaluation script against new agent, compare with EXP-001 results
+2. **Phase 2:** `python scripts/run_ablation.py` — runs all ablation experiments, outputs comparison table
 3. **Phase 3:** `streamlit run app/main.py` — ask "How many employees are there?" and verify answer (8)
 4. **Phase 4:** Test all UI features manually, run full pytest suite

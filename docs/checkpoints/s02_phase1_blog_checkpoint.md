@@ -29,7 +29,6 @@
 - **Architecture explanation** paragraph added (LangGraph state graph, ReAct comparison)
 - **Code generation framing** added — positions text-to-SQL as code generation testbed
 - **Metrics explanations** added — EX calculation, Raw Parsability, Table Hallucination, Latency
-- **JetBrains alignment** — 4 edits surfacing code generation, open-source models, fast iteration, generalizability
 - **Style matched** against previous LinkedIn post (disaster tweets)
 - **LinkedIn post** published with Task Manager screenshot, link in first comment
 
