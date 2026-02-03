@@ -150,7 +150,7 @@ def render_schema_explorer(schema_info: dict):
             # Foreign keys
             if info["fks"]:
                 fk_text = ", ".join(
-                    f"{fk['column']} → {fk['referred_table']}"
+                    f"{', '.join(fk['constrained_columns'])} → {fk['referred_table']}"
                     for fk in info["fks"]
                 )
                 st.caption(f"Foreign keys: {fk_text}")

@@ -111,6 +111,74 @@ From `docs/research/ablation-study-design.md`:
 
 ---
 
+## Blog Part 4: From Prototype to Product (Ready to Write)
+
+**Working Title:** "Shipping a Local-First AI App: Why I Chose Docker Over the Cloud"
+
+### Hook: The Privacy Trade-off
+
+Everyone's rushing to deploy AI apps on cloud platforms. I went the opposite direction: a fully local text-to-SQL agent that runs on your machine, queries your databases, and never sends data anywhere.
+
+### Sprint 2 Journey
+
+**Phase 1: Code Extraction**
+- Notebook prototype → 4 Python modules (config, database, agent, main)
+- 33 pytest tests as executable specification
+- TDD approach: write tests, then extract code
+
+**Phase 2: Ablation Study**
+- 84 experiments before building UI
+- Discovered zero-shot beats few-shot and CoT
+- Prevented implementing the wrong prompt strategy
+
+**Phase 3: Streamlit UI**
+- Schema explorer with relationship diagram
+- Query history in sidebar
+- Ollama connectivity check
+- Error handling (graceful degradation)
+
+**Phase 4: Docker**
+- `docker-compose up` runs everything
+- No manual Ollama installation needed
+- GPU support option for faster inference
+
+### Why Local-First?
+
+1. **Privacy:** Your SQL queries and database schemas never leave your machine
+2. **No API costs:** Ollama is free; cloud APIs charge per token
+3. **Offline capable:** Works without internet after initial model download
+4. **Full control:** You choose the model, tune the prompts, own the data
+
+### The Trade-off
+
+- **Can't deploy to Streamlit Cloud** — Ollama needs to run alongside the app
+- **Requires decent hardware** — 8GB+ RAM for 8B models
+- **Model download** — First run pulls ~5GB
+
+### Architecture Diagram
+
+```
+User Browser → Streamlit (port 8501) → LangGraph Agent → Ollama (port 11434)
+                    ↓                        ↓
+              SQLite DB              llama3.1:8b model
+```
+
+### Blog Angles
+
+1. **Local-first philosophy:** "Your data never leaves your machine"
+2. **Docker as deployment strategy:** "One command to run an AI app"
+3. **Sprint 2 retrospective:** "What I learned shipping a prototype"
+4. **DSM validation:** "21 methodology entries later"
+
+### Data Collected
+
+- [x] Final architecture (6-node LangGraph)
+- [x] Docker configuration (app + Ollama + model pull)
+- [x] Local vs cloud trade-offs
+- [x] Sprint metrics (33 tests, 84 ablation runs, 21 feedback entries)
+
+---
+
 ## Observations
 
 ### Phase 1 → Phase 2 Transition
@@ -119,9 +187,12 @@ From `docs/research/ablation-study-design.md`:
 2. **Checkpoint discipline:** Pre-implementation checkpoint captures state
 3. **Research-driven design:** AbGen paper influenced ablation matrix design
 
-### Emerging Patterns
+### Sprint 2 Summary
 
-- (To be filled after ablation runs)
+1. **Ablation study was critical:** Would have implemented few-shot without data showing it hurts
+2. **Docker adds value:** Cross-platform deployment without complexity
+3. **21 feedback entries:** Substantial data for DSM improvement
+4. **50% EX achieved:** +7.1pp over baseline, room for improvement with larger models
 
 ---
 

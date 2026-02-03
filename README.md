@@ -19,11 +19,11 @@ The agent translates your question into SQL, validates it, executes it, and retu
 The agent uses a **LangGraph state graph** informed by current text-to-SQL research (DIN-SQL, MAC-SQL, CHESS):
 
 ```
-[schema_filter] -> [generate_sql] -> [validate_query] -> [execute_query] -> [END]
-                        ^                  |                    |
-                        |                  v                    v
-                        +--------- [handle_error] <-----------+
-                                   (max 3 retries)
+[schema_filter] → [generate_sql] → [postprocess_query] → [validate_query] → [execute_query] → [END]
+                        ^                                       |                    |
+                        |                                       v                    v
+                        +-------------------------------- [handle_error] <-----------+
+                                                         (max 3 retries)
 ```
 
 Key design decisions:
@@ -68,7 +68,10 @@ Key design decisions:
 - [x] **Sprint 1, Phase 1**: Environment setup — Ollama, models, Chinook database
 - [x] **Sprint 1, Phase 2**: Core agent build — 5-node LangGraph agent, SQL post-processing, 6/6 test queries passing
 - [x] **Sprint 1, Phase 3**: Evaluation framework — 14-query test suite, 2-model comparison, model selection ([EXP-001](data/experiments/s01_d02_exp001/README.md))
-- [ ] **Sprint 2**: Streamlit application
+- [x] **Sprint 2, Phase 1**: Code extraction — `app/` modules, 33 pytest tests
+- [x] **Sprint 2, Phase 2**: Ablation study — 84 experiments, zero-shot best ([EXP-002](data/experiments/s02_ablation/README.md))
+- [x] **Sprint 2, Phase 3**: Streamlit UI — schema explorer, query history, error handling
+- [x] **Sprint 2, Phase 4**: Docker support — `docker-compose up` runs everything
 
 ### EXP-001: Model Comparison (Sprint 1, Phase 3)
 
@@ -106,16 +109,45 @@ EXP-001 compared `sqlcoder:7b` (SQL-specialized fine-tune) against `llama3.1:8b`
 
 **Limitations discovered (6):** Each experiment produces a structured limitation registry (LIM-001 through LIM-006), tracking severity, type, and disposition. Key limitations include 0% Hard query accuracy (LIM-001), table hallucination in sqlcoder (LIM-002), and no few-shot examples in prompts (LIM-006). These feed directly into Sprint 2's improvement backlog.
 
-See the [full experiment report](data/experiments/s01_d02_exp001/README.md) for per-query results, error pattern analysis, and evaluation design decisions. See [PLAN.md](docs/plans/PLAN.md) for the development roadmap.
+See the [full experiment report](data/experiments/s01_d02_exp001/README.md) for per-query results, error pattern analysis, and evaluation design decisions.
+
+### EXP-002: Ablation Study (Sprint 2, Phase 2)
+
+EXP-002 tested 6 prompt configurations (3 prompt types × 2 schema types) across 14 queries — 84 total experimental runs.
+
+**Configurations tested:**
+- **Prompt types:** zero-shot, few-shot (2 examples), chain-of-thought
+- **Schema types:** full (all 11 tables), selective (keyword-filtered)
+
+**Results:**
+
+| Configuration | Execution Accuracy | Syntax Valid | Avg Latency |
+|--------------|-------------------|--------------|-------------|
+| **zero_shot_full** | **50% (7/14)** | 100% | 8.97s |
+| zero_shot_selective | 43% (6/14) | 93% | 12.17s |
+| few_shot_full | 36% (5/14) | 100% | 8.46s |
+| few_shot_selective | 43% (6/14) | 100% | 11.54s |
+| cot_full | 29% (4/14) | 93% | 7.78s |
+| cot_selective | 43% (6/14) | 100% | 11.37s |
+
+**Key findings:**
+1. **Few-shot examples hurt:** Adding examples *reduced* accuracy by 14pp (50% → 36%)
+2. **Chain-of-thought hurt:** CoT was the worst performer at 29%
+3. **Full schema wins:** Despite more "noise," full context beat selective filtering
+4. **Baseline improved:** 50% EX vs 42.9% EXP-001 baseline (+7.1pp)
+
+**Recommendation:** Use zero-shot prompting with full schema for llama3.1:8b. This contradicts common prompt engineering assumptions — empirical validation matters.
+
+See the [full ablation report](data/experiments/s02_ablation/README.md) for detailed analysis.
 
 ## Getting Started
 
 ### Prerequisites
 
 1. Install [Ollama](https://ollama.ai/)
-2. Pull a model:
+2. Pull the recommended model (~5GB):
    ```bash
-   ollama pull sqlcoder:7b
+   ollama pull llama3.1:8b
    ```
 3. Python 3.10+
 
@@ -136,7 +168,53 @@ pip install -r requirements.txt
 
 ### Usage
 
-*Coming soon -- see Sprint 1 notebook for experimentation*
+#### Option 1: Run Locally (Recommended for Development)
+
+1. **Start Ollama** (in a separate terminal):
+   ```bash
+   ollama serve
+   ```
+
+2. **Pull the model** (first time only, ~5GB download):
+   ```bash
+   ollama pull llama3.1:8b
+   ```
+
+3. **Run the Streamlit app**:
+   ```bash
+   PYTHONPATH=. streamlit run app/main.py
+   ```
+
+4. **Open your browser** at http://localhost:8501
+
+#### Option 2: Run with Docker (Recommended for Deployment)
+
+Docker Compose runs both the app and Ollama together — no manual setup needed.
+
+```bash
+# Start everything (first run downloads the model)
+docker-compose up
+
+# Or run in background
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+
+# Stop
+docker-compose down
+```
+
+Open http://localhost:8501 in your browser.
+
+**GPU Support (NVIDIA):** Uncomment the `deploy` section in `docker-compose.yml` for faster inference.
+
+#### Using the App
+
+1. The sidebar shows **Ollama status** (green = connected) and a **Schema Explorer** with table relationships
+2. Type a natural language question in the main area, e.g., "How many employees are there?"
+3. Click **Run Query** to see the generated SQL and results
+4. Query history is saved in the sidebar
 
 ## Project Structure
 
@@ -239,7 +317,9 @@ The project uses **DSM 1.0** (Data Science Collaboration) for Sprint 1 notebook 
 ## Blog
 
 - **Part 1:** [Two Experiments in Parallel: Building a Text-to-SQL Agent While Testing a Collaboration Methodology](docs/blog/blog-s01.md) — From notebook exploration to structured evaluation. Covers the research-driven architecture, model comparison (sqlcoder vs llama3.1), and what we learned from running two experiments at once.
-- **Part 2:** *Coming after Sprint 2* — From prototype to application. Streamlit UI, few-shot examples, and dog-fooding the methodology.
+- **Part 2:** [The Case for Human-Agent Collaboration: What 28 Test Outputs Taught Me About Cognitive Limits](docs/blog/blog-s02-collaboration-value.md) — Why structured human-AI workflows catch errors that automation misses.
+- **Part 3:** *Ready to write* — "What 84 Experiments Taught Me About Prompt Engineering" — Counter-intuitive ablation study findings (few-shot and CoT hurt performance).
+- **Part 4:** *Ready to write* — "Shipping a Local-First AI App" — From notebook prototype to Docker-deployed application.
 
 ## Contributing
 

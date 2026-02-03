@@ -338,15 +338,27 @@
 - **Reasoning:** Clarity 5 — ablation results are unambiguous. Applicability 5 — directly informed production configuration choice. Completeness 5 — covered all planned configurations with documented methodology. Efficiency 5 — 84 runs completed in ~15 minutes with automated runner.
 - **Recommendation:** (1) Add "ablation study" as a recommended step in DSM experiment workflow when comparing prompt strategies. (2) Document the pattern: "empirical validation over literature assumptions" as a principle in DSM 4.0. (3) Reference EXP-002 as an example of productive null results — showing what doesn't work is as valuable as showing what does.
 
+### Entry 21: Sprint 2 Complete — From Notebook to Production App
+- **Date:** 2026-02-03 | **Sprint:** S2 Final | **Type:** Success
+- **Context:** Completed Sprint 2: extracted notebook code into modular `app/` package, ran ablation study (EXP-002), built Streamlit UI with schema explorer, added Docker support for cross-platform deployment.
+- **Finding:** The DSM sprint structure worked well for transitioning from experimentation (Sprint 1 notebooks) to production code (Sprint 2 app).
+  - **What worked:** Phase-based planning kept focus narrow. Each phase had clear deliverables and verification criteria.
+  - **Ablation study value:** EXP-002 prevented implementing the wrong prompt strategy. Literature suggested few-shot and CoT; data showed zero-shot was best (+21pp delta).
+  - **Docker decision:** Adding containerization preserves the "local-first, no API keys" architecture while enabling deployment on any platform with Docker.
+  - **Feedback loop:** 21 methodology entries logged, directly informing DSM improvements.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 4 (Avg: 4.75)
+- **Reasoning:** Clarity 5 — sprint deliverables were unambiguous. Applicability 5 — the pattern (notebook → extraction → ablation → UI → container) is reusable. Completeness 5 — all MUST requirements met. Efficiency 4 — some rework on FK key structure, but caught quickly.
+- **Recommendation:** (1) Document "notebook-to-app" pattern in DSM 4.0 as a migration workflow. (2) Make ablation studies standard before production deployment. (3) Add "deployment packaging" (Docker, etc.) as a recommended phase in app development sprints.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 20 |
-| Average score | 3.2 / 5 |
+| Entries logged | 21 |
+| Average score | 3.3 / 5 |
 | Gaps found | 11 |
 | Pain points | 3 |
-| Successes | 6 |
+| Successes | 7 |
 
 ### Project-Specific DSM Adaptations
 1. Added Phase 0 (Research) before standard DSM_0 setup steps -- surveyed text-to-SQL state of the art to inform architecture and model selection
