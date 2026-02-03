@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <style>
+    .title { font: bold 24px sans-serif; fill: #333; }
+    .subtitle { font: 14px sans-serif; fill: #666; }
+    .label { font: 12px sans-serif; fill: #333; }
+    .value { font: bold 16px sans-serif; fill: #fff; }
+    .value-dark { font: bold 16px sans-serif; fill: #333; }
+    .axis { font: 11px sans-serif; fill: #666; }
+    .winner { font: bold 12px sans-serif; fill: #22c55e; }
+    .worst { font: bold 12px sans-serif; fill: #ef4444; }
+  </style>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" class="title">Execution Accuracy by Prompt Configuration</text>
+  <text x="400" y="65" text-anchor="middle" class="subtitle">llama3.1:8b on 14-query test suite (84 total runs)</text>
+
+  <!-- Y-axis -->
+  <line x1="100" y1="100" x2="100" y2="400" stroke="#ccc" stroke-width="1"/>
+  <text x="90" y="105" text-anchor="end" class="axis">50%</text>
+  <text x="90" y="165" text-anchor="end" class="axis">40%</text>
+  <text x="90" y="225" text-anchor="end" class="axis">30%</text>
+  <text x="90" y="285" text-anchor="end" class="axis">20%</text>
+  <text x="90" y="345" text-anchor="end" class="axis">10%</text>
+  <text x="90" y="405" text-anchor="end" class="axis">0%</text>
+
+  <!-- Grid lines -->
+  <line x1="100" y1="100" x2="750" y2="100" stroke="#eee" stroke-width="1"/>
+  <line x1="100" y1="160" x2="750" y2="160" stroke="#eee" stroke-width="1"/>
+  <line x1="100" y1="220" x2="750" y2="220" stroke="#eee" stroke-width="1"/>
+  <line x1="100" y1="280" x2="750" y2="280" stroke="#eee" stroke-width="1"/>
+  <line x1="100" y1="340" x2="750" y2="340" stroke="#eee" stroke-width="1"/>
+  <line x1="100" y1="400" x2="750" y2="400" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Bars -->
+  <!-- zero_shot_full: 50% - GREEN (winner) -->
+  <rect x="120" y="100" width="80" height="300" fill="#22c55e" rx="4"/>
+  <text x="160" y="130" text-anchor="middle" class="value">50%</text>
+  <text x="160" y="420" text-anchor="middle" class="label">zero-shot</text>
+  <text x="160" y="435" text-anchor="middle" class="label">full</text>
+  <text x="160" y="460" text-anchor="middle" class="winner">WINNER</text>
+
+  <!-- zero_shot_selective: 43% -->
+  <rect x="220" y="142" width="80" height="258" fill="#94a3b8" rx="4"/>
+  <text x="260" y="172" text-anchor="middle" class="value">43%</text>
+  <text x="260" y="420" text-anchor="middle" class="label">zero-shot</text>
+  <text x="260" y="435" text-anchor="middle" class="label">selective</text>
+
+  <!-- few_shot_full: 36% -->
+  <rect x="320" y="184" width="80" height="216" fill="#94a3b8" rx="4"/>
+  <text x="360" y="214" text-anchor="middle" class="value">36%</text>
+  <text x="360" y="420" text-anchor="middle" class="label">few-shot</text>
+  <text x="360" y="435" text-anchor="middle" class="label">full</text>
+
+  <!-- few_shot_selective: 43% -->
+  <rect x="420" y="142" width="80" height="258" fill="#94a3b8" rx="4"/>
+  <text x="460" y="172" text-anchor="middle" class="value">43%</text>
+  <text x="460" y="420" text-anchor="middle" class="label">few-shot</text>
+  <text x="460" y="435" text-anchor="middle" class="label">selective</text>
+
+  <!-- cot_full: 29% - RED (worst) -->
+  <rect x="520" y="226" width="80" height="174" fill="#ef4444" rx="4"/>
+  <text x="560" y="256" text-anchor="middle" class="value">29%</text>
+  <text x="560" y="420" text-anchor="middle" class="label">CoT</text>
+  <text x="560" y="435" text-anchor="middle" class="label">full</text>
+  <text x="560" y="460" text-anchor="middle" class="worst">WORST</text>
+
+  <!-- cot_selective: 43% -->
+  <rect x="620" y="142" width="80" height="258" fill="#94a3b8" rx="4"/>
+  <text x="660" y="172" text-anchor="middle" class="value">43%</text>
+  <text x="660" y="420" text-anchor="middle" class="label">CoT</text>
+  <text x="660" y="435" text-anchor="middle" class="label">selective</text>
+
+  <!-- Delta annotation -->
+  <line x1="160" y1="85" x2="560" y2="85" stroke="#333" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="360" y="78" text-anchor="middle" class="subtitle">21 percentage points difference</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

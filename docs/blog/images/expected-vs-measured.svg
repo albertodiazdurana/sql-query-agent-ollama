@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400">
+  <style>
+    .box-title { font: bold 20px sans-serif; fill: #fff; }
+    .box-subtitle { font: 14px sans-serif; fill: rgba(255,255,255,0.8); }
+    .item-label { font: 15px sans-serif; fill: #333; }
+    .item-value-pos { font: bold 16px sans-serif; fill: #22c55e; }
+    .item-value-neg { font: bold 16px sans-serif; fill: #ef4444; }
+    .best { font: bold 14px sans-serif; fill: #666; }
+    .best-value { font: bold 14px sans-serif; }
+    .icon { font: 24px sans-serif; }
+  </style>
+
+  <!-- Background -->
+  <rect width="900" height="400" fill="#f8fafc"/>
+
+  <!-- Left box: What I Expected -->
+  <rect x="30" y="30" width="400" height="340" fill="#fff" stroke="#e2e8f0" stroke-width="2" rx="12"/>
+  <rect x="30" y="30" width="400" height="60" fill="#3b82f6" rx="12"/>
+  <rect x="30" y="78" width="400" height="12" fill="#3b82f6"/>
+  <text x="230" y="55" text-anchor="middle" class="box-title">WHAT I EXPECTED</text>
+  <text x="230" y="75" text-anchor="middle" class="box-subtitle">(from literature)</text>
+
+  <!-- Left items -->
+  <text x="60" y="130" class="item-label">1. Few-shot examples</text>
+  <text x="340" y="130" text-anchor="end" class="item-value-pos">+10-15%</text>
+  <line x1="60" y1="145" x2="370" y2="145" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="60" y="180" class="item-label">2. Chain-of-thought</text>
+  <text x="340" y="180" text-anchor="end" class="item-value-pos">+10%</text>
+  <line x1="60" y1="195" x2="370" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="60" y="230" class="item-label">3. Filter schema</text>
+  <text x="340" y="230" text-anchor="end" class="item-value-pos">+5%</text>
+  <line x1="60" y1="245" x2="370" y2="245" stroke="#e2e8f0" stroke-width="1"/>
+
+  <rect x="60" y="270" width="310" height="50" fill="#f0fdf4" rx="6"/>
+  <text x="70" y="295" class="best">Best config:</text>
+  <text x="165" y="295" class="best-value" fill="#22c55e">few-shot + filtered schema</text>
+
+  <text x="230" y="355" text-anchor="middle" class="icon">📚</text>
+
+  <!-- Right box: What I Measured -->
+  <rect x="470" y="30" width="400" height="340" fill="#fff" stroke="#e2e8f0" stroke-width="2" rx="12"/>
+  <rect x="470" y="30" width="400" height="60" fill="#f97316" rx="12"/>
+  <rect x="470" y="78" width="400" height="12" fill="#f97316"/>
+  <text x="670" y="55" text-anchor="middle" class="box-title">WHAT I MEASURED</text>
+  <text x="670" y="75" text-anchor="middle" class="box-subtitle">(84 experiments)</text>
+
+  <!-- Right items -->
+  <text x="500" y="130" class="item-label">1. Few-shot examples</text>
+  <text x="780" y="130" text-anchor="end" class="item-value-neg">-14pp</text>
+  <line x1="500" y1="145" x2="810" y2="145" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="500" y="180" class="item-label">2. Chain-of-thought</text>
+  <text x="780" y="180" text-anchor="end" class="item-value-neg">-21pp</text>
+  <line x1="500" y1="195" x2="810" y2="195" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="500" y="230" class="item-label">3. Filter schema</text>
+  <text x="780" y="230" text-anchor="end" class="item-value-neg">-7pp</text>
+  <line x1="500" y1="245" x2="810" y2="245" stroke="#e2e8f0" stroke-width="1"/>
+
+  <rect x="500" y="270" width="310" height="50" fill="#fef2f2" rx="6"/>
+  <text x="510" y="295" class="best">Best config:</text>
+  <text x="605" y="295" class="best-value" fill="#ef4444">zero-shot + full schema</text>
+
+  <text x="670" y="355" text-anchor="middle" class="icon">📊</text>
+
+  <!-- Arrow between boxes -->
+  <text x="450" y="200" text-anchor="middle" style="font: 30px sans-serif; fill: #94a3b8;">→</text>
+</svg>
