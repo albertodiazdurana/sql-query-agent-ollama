@@ -224,6 +224,11 @@ DSM shapes how this project is organized:
 
 The project uses **DSM 1.0** (Data Science Collaboration) for Sprint 1 notebook experimentation and **DSM 4.0** (Software Engineering Adaptation) for Sprint 2 application development.
 
+## Blog
+
+- **Part 1:** [Two Experiments in Parallel: Building a Text-to-SQL Agent While Testing a Collaboration Methodology](docs/blog/blog-s01.md) — From notebook exploration to structured evaluation. Covers the research-driven architecture, model comparison (sqlcoder vs llama3.1), and what we learned from running two experiments at once.
+- **Part 2:** *Coming after Sprint 2* — From prototype to application. Streamlit UI, few-shot examples, and dog-fooding the methodology.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

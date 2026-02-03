@@ -265,15 +265,28 @@
 - **Reasoning:** Clarity 2 — DSM never mentions IDE permission settings. Applicability 4 — every project using Claude Code's direct file writing will face this. Completeness 2 — the collaboration model assumes human review but doesn't ensure the tooling enforces it. Efficiency 3 — quick fix once identified, but the silent bypass went unnoticed through several file writes.
 - **Recommendation:** Add IDE permission configuration to DSM 4.0's environment setup phase (P0) and to the Custom Instructions template. Specifically: when using Claude Code in VSCode, set `"claudeCode.initialPermissionMode": "default"` to enable diff approval. This should be listed alongside other environment prerequisites (Python version, venv, dependencies). See `backlogs.md` for proposal.
 
+### Entry 15: Section 2.5.6 / 2.5.7 — Blog Writing Workflow and Emerging Style Guide
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 1 | **Type:** Success + Gap
+- **Context:** Wrote the Sprint 1 blog post (`docs/blog/blog-s01.md`) and LinkedIn distribution post collaboratively. The full 6-step process from Section 2.5.6 was completed for the first time: collect materials → structure outline → write draft → review and iterate → finalize → publish (LinkedIn post + blog article).
+- **Finding:** The 2.5.6 process works. Having materials collected throughout Sprint 1 (15 items tracked in `blog-materials-s01.md`) made drafting fast — the outline practically wrote itself. The draft went through 5 iterative passes, each addressing one concern: (1) narrative flow, (2) citations/references, (3) challenges section, (4) alignment with target audience, (5) style matching against previous blog post. This incremental refinement produced a polished result.
+  - **What's missing from DSM:** Section 2.5.6 defines the *process* but not the *style conventions*. After two blog posts, a consistent style is emerging that should be documented:
+    - **Long-form (blog):** Author byline with date. Opening hook with surprising finding. Educational tone (learner sharing discoveries, not authority). Numbered references [1] with full citation list. Tables for metrics. ASCII diagrams for architecture. Closing engagement question. GitHub links at end.
+    - **Short-form (LinkedIn):** No emojis, clean line breaks. Opens with counter-intuitive result. Contrasts expectation vs reality. Frames as learning journey. Blog link in first comment (not post body — LinkedIn algorithm deprioritizes external links). Hashtags at end. Image: authentic screenshot preferred over polished graphics.
+  - **What's missing from DSM:** Section 2.5.7 (Publication Strategy) mentions "short post + article" but doesn't describe the LinkedIn-specific patterns (link-in-comments, image strategy, hashtag conventions) that are critical for reach.
+  - **What worked well:** Using a previous post as a style reference produced consistency. The "alignment exercise" (mapping blog content to a target audience's interests) surfaced implicit angles that strengthened the post without feeling forced.
+- **Scores:** Clarity 3, Applicability 4, Completeness 3, Efficiency 4 (Avg: 3.5)
+- **Reasoning:** Clarity 3 — the 6-step process is clear but style conventions are undocumented. Applicability 4 — the process worked well for a real blog post. Completeness 3 — covers the writing process but not the format/style layer or platform-specific distribution patterns. Efficiency 4 — the materials-first approach made the whole workflow smooth; the iterative passes were natural, not wasteful.
+- **Recommendation:** (1) Add a "Blog Style Guide" subsection to Section 2.5.6 or as a new Section 2.5.9, documenting the long-form and short-form conventions that emerge from each project. The style guide should be a living document — updated after each post, not prescribed upfront. (2) Expand Section 2.5.7 (Publication Strategy) with platform-specific patterns: LinkedIn link-in-comments, image strategy, hashtag conventions. (3) Add "previous post style reference" as a step in the writing process — consistency across posts matters for personal brand. See `backlogs.md` for proposal.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 14 |
+| Entries logged | 15 |
 | Average score | 3.0 / 5 |
 | Gaps found | 9 |
 | Pain points | 3 |
-| Successes | 2 |
+| Successes | 3 |
 
 ### Project-Specific DSM Adaptations
 1. Added Phase 0 (Research) before standard DSM_0 setup steps -- surveyed text-to-SQL state of the art to inform architecture and model selection

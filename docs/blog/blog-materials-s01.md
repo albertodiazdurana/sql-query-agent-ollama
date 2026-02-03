@@ -52,10 +52,10 @@ Track blog materials collected during the project and evaluate how well the DSM 
 |------|-------------|-----------|-------|
 | 1. Collect materials throughout | Ongoing capture | Done | 20 materials tracked across Sprint 1 |
 | 2. Structure outline | Draft structure | Done | Outline below |
-| 3. Write first draft | 1,500-3,000 words | Pending | After Sprint 2 completion |
-| 4. Review and iterate | Technical accuracy check | Pending | |
-| 5. Finalize | Publication-ready | Pending | |
-| 6. Publish | Short post + article | Pending | |
+| 3. Write first draft | 1,500-3,000 words | Done | ~2,400 words, collaborative draft with AI agent |
+| 4. Review and iterate | Technical accuracy check | Done | 5 passes: flow, citations (13 refs), challenges, audience alignment, style matching |
+| 5. Finalize | Publication-ready | Done | `docs/blog/blog-s01.md` — Part 1 of 2 |
+| 6. Publish | Short post + article | Done | LinkedIn post published 2026-02-03 with Task Manager screenshot |
 
 ### Section 2.5.7: Publication Strategy
 *Assessment at project end.*
@@ -122,4 +122,33 @@ Track blog materials collected during the project and evaluate how well the DSM 
 
 1. Collecting materials throughout the sprint worked well — having a running list made the outline easy to write.
 2. The blog file was initially placed in `docs/feedback/` (following Section 6.4.5 grouping) but moved to `docs/blog/` at sprint boundary. Blog materials are project output, not DSM feedback.
-3. The "collect → outline → draft" flow from Section 2.5.6 is logical. Sprint 1 completed steps 1-2. The full draft will be written after Sprint 2 when the complete project story is available.
+3. The "collect → outline → draft" flow from Section 2.5.6 is logical. Sprint 1 completed steps 1-2. Steps 3-6 completed during Sprint 2 Phase 1.
+4. Writing the draft was collaborative: AI agent wrote first draft from materials, author reviewed and iterated section by section. Five refinement passes, each targeting one concern (flow, citations, challenges, audience alignment, style).
+5. Using the previous LinkedIn post (disaster tweets) as a style reference ensured consistency across posts. This "style reference" step should be part of the DSM process.
+6. The "alignment exercise" — mapping blog content to a target audience's interests without rewriting — surfaced implicit angles and strengthened the post naturally.
+7. LinkedIn post was adapted from the blog (short-form version of the hook + key finding). Link placed in first comment, not post body (algorithm preference). Task Manager screenshot used as image.
+
+---
+
+## Emerging Blog Style Guide
+
+*Conventions observed across two blog posts (disaster tweets, SQL agent). To be updated after each post.*
+
+### Long-Form (Blog Article)
+- **Byline:** "By Alberto Diaz Durana | [Month] [Year]"
+- **Opening:** Hook with surprising or counter-intuitive finding
+- **Tone:** Learner sharing discoveries, not authority lecturing. Honest about limitations.
+- **Structure:** Setup → Build → Evaluate → Learn → What's Next
+- **Citations:** Numbered [1] with full reference list at end. Grounded in research.
+- **Formatting:** Tables for metrics/results. Bold for key terms on first use. ASCII or Mermaid diagrams for architecture. No emojis.
+- **Closing:** Engagement question inviting reader experience. GitHub links to open-source repos.
+- **Length:** 2,000-2,500 words
+
+### Short-Form (LinkedIn Post)
+- **Opening:** Counter-intuitive result or expectation vs reality contrast (visible before "see more")
+- **Tone:** Same as blog — reflective, educational
+- **Formatting:** No emojis. Clean line breaks between concept sections. No bold or special characters.
+- **Links:** Blog URL in first comment, NOT in post body (LinkedIn algorithm deprioritizes external links)
+- **Image:** Authentic screenshot preferred over polished graphics (relatability > polish)
+- **Hashtags:** 6-8 relevant tags at end
+- **Length:** 150-200 words

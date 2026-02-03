@@ -119,6 +119,15 @@
   - Consider adding a verification step: "Confirm the IDE shows a diff approval dialog when the agent makes a test edit"
 - **Evidence:** During Sprint 2 Phase 1, the agent wrote 4 files (config.py, database.py, agent.py, sprint-2-plan.md) before the user noticed changes were being auto-applied without approval. The setting `"claudeCode.initialPermissionMode": "default"` resolved the issue immediately. A test edit confirmed the approve/reject buttons appeared.
 
+### Add Blog Style Guide and Publication Strategy details to DSM
+- **DSM Section:** Section 2.5.6 (Blog Deliverable Process) + Section 2.5.7 (Publication Strategy)
+- **Problem:** Section 2.5.6 defines the 6-step writing *process* but not the *style conventions*. After two blog posts (disaster tweets classification, SQL agent), a consistent writing style emerged through practice rather than from DSM guidance. Section 2.5.7 mentions "short post + article" but doesn't describe platform-specific distribution patterns (LinkedIn link-in-comments, image strategy, hashtag conventions) that significantly affect reach.
+- **Proposed Solution:** Three additions:
+  1. **Section 2.5.9 (Blog Style Guide):** A living document template for style conventions that projects populate after their first post. Covers: byline format, opening pattern, tone, citation style, formatting conventions, closing pattern, and length targets — separately for long-form (blog) and short-form (social).
+  2. **Section 2.5.7 expansion:** Add platform-specific distribution patterns. For LinkedIn: link in first comment (not post body), image strategy (authentic > polished), hashtag conventions (6-8 relevant tags), post length (150-200 words).
+  3. **Section 2.5.6 addition:** Add "reference previous post for style consistency" as a step between outline and draft. Consistency across posts builds personal brand.
+- **Evidence:** The SQL agent blog writing process used the disaster tweets LinkedIn post as an explicit style reference. This produced consistency (same byline, same opening pattern, same tone). The LinkedIn distribution pattern (link-in-comments, authentic screenshot) was discovered through practice, not from DSM guidance. Both patterns should be documented for future projects.
+
 ---
 
 ## Low Priority
