@@ -69,6 +69,9 @@ Full schema provides the complete picture. The model can figure out what to igno
 
 ## The Counter-Intuitive Lesson
 
+![What I Expected vs What I Measured](images/expected-vs-measured.png)
+*Left: Literature recommendations. Right: Results from 84 experiments on llama3.1:8b.*
+
 The techniques that work for GPT-4 and larger models may not transfer to 8B local models:
 
 1. **Few-shot examples need careful curation** — Bad examples are worse than no examples
