@@ -51,4 +51,4 @@ https://github.com/albertodiazdurana/sql-query-agent-ollama/blob/main/docs/blog/
 
 ---
 
-**Post URL:** (to be filled after publishing)
+**Post URL:** https://www.linkedin.com/posts/albertodiazdurana_promptengineering-llms-texttosql-activity-7424450141513883648-86FA

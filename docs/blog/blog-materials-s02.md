@@ -40,9 +40,13 @@
 
 ---
 
-## Blog Part 3: Ablation Study (Ready to Write)
+## Blog Part 3: Ablation Study (Published)
 
-**Working Title:** "What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer"
+**File:** `blog-s02-ablation.md`
+**LinkedIn Post:** `linkedin-post-s02-ablation.md`
+**Blog URL:** https://github.com/albertodiazdurana/sql-query-agent-ollama/blob/main/docs/blog/blog-s02-ablation.md
+**LinkedIn URL:** https://www.linkedin.com/posts/albertodiazdurana_promptengineering-llms-texttosql-activity-7424450141513883648-86FA
+**Title:** "What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer"
 
 ### Hook: Counter-Intuitive Results
 
