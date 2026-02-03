@@ -278,15 +278,27 @@
 - **Reasoning:** Clarity 3 — the 6-step process is clear but style conventions are undocumented. Applicability 4 — the process worked well for a real blog post. Completeness 3 — covers the writing process but not the format/style layer or platform-specific distribution patterns. Efficiency 4 — the materials-first approach made the whole workflow smooth; the iterative passes were natural, not wasteful.
 - **Recommendation:** (1) Add a "Blog Style Guide" subsection to Section 2.5.6 or as a new Section 2.5.9, documenting the long-form and short-form conventions that emerge from each project. The style guide should be a living document — updated after each post, not prescribed upfront. (2) Expand Section 2.5.7 (Publication Strategy) with platform-specific patterns: LinkedIn link-in-comments, image strategy, hashtag conventions. (3) Add "previous post style reference" as a step in the writing process — consistency across posts matters for personal brand. See `backlogs.md` for proposal.
 
+### Entry 16: Blog Workflow — Second Post and LinkedIn Comment Strategy
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 1 | **Type:** Success
+- **Context:** Wrote a second blog post (`docs/blog/blog-s02-collaboration-value.md`) on human-agent collaboration value, plus LinkedIn post and comment. This extended the workflow established in Entry 15 with: (a) web research to ground claims in published data (code review fatigue, Fagan inspection metrics), (b) concrete error examples from experiment outputs as visual evidence, (c) LinkedIn comment strategy to promote DSM separately from the main post.
+- **Finding:** The workflow from Entry 15 scaled well to a second post. New patterns emerged:
+  - **Research integration:** Using WebSearch to find published metrics (defect detection rates, inspection efficiency) added credibility and grounded the blog's claims in external evidence.
+  - **Error examples as visuals:** Pulling specific failed outputs from experiment JSON (H4 unit conversion, H2 type mismatch, M5 absurd revenue) created compelling "spot the error" content that illustrates the cognitive limits argument.
+  - **LinkedIn comment as DSM promotion:** The main post doesn't mention DSM directly — it focuses on the findings. The comment provides a soft invitation ("If you're the kind of person who likes numbered decision logs...") for those who resonate with the structure. This separates the content (blog value) from the call-to-action (DSM repo).
+  - **Artifact organization:** Saving LinkedIn posts as separate files (`linkedin-post-s01.md`, `linkedin-post-s02.md`) with post text + comment text makes the workflow reproducible and keeps the blog folder organized by artifact type.
+- **Scores:** Clarity 4, Applicability 4, Completeness 4, Efficiency 4 (Avg: 4.0)
+- **Reasoning:** Clarity 4 — the process is now well-documented across Entry 15 and 16. Applicability 4 — worked for two different blog topics. Completeness 4 — covers research, writing, visuals, distribution, and promotion. Efficiency 4 — the second post was faster because the workflow was established.
+- **Recommendation:** Add to the emerging Blog Style Guide: (1) Research step before drafting to find external data that supports claims. (2) LinkedIn comment strategy: main post = content, comment = call-to-action/links. (3) Artifact naming: `linkedin-post-{scope}.md` files include both post text and comment text.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 15 |
+| Entries logged | 16 |
 | Average score | 3.0 / 5 |
 | Gaps found | 9 |
 | Pain points | 3 |
-| Successes | 3 |
+| Successes | 4 |
 
 ### Project-Specific DSM Adaptations
 1. Added Phase 0 (Research) before standard DSM_0 setup steps -- surveyed text-to-SQL state of the art to inform architecture and model selection
