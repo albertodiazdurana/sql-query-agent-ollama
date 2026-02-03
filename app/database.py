@@ -55,6 +55,35 @@ def get_sample_rows(engine: Engine, tables: list[str], n: int = 3) -> dict:
     return sample_rows
 
 
+def build_schema_text(schema_info: dict, tables: list[str] | None = None) -> str:
+    """Build CREATE TABLE statements for schema context in prompts.
+
+    Args:
+        schema_info: Full schema from get_schema_info()
+        tables: List of table names to include. If None, includes all tables.
+
+    Returns:
+        String with CREATE TABLE statements for the specified tables.
+    """
+    if tables is None:
+        tables = list(schema_info.keys())
+
+    lines = []
+    for table_name in tables:
+        if table_name not in schema_info:
+            continue
+        info = schema_info[table_name]
+        cols = []
+        for col in info["columns"]:
+            col_type = str(col.get("type", "TEXT"))
+            nullable = "" if col.get("nullable", True) else " NOT NULL"
+            pk = " PRIMARY KEY" if col["name"] in info["pk"] else ""
+            cols.append(f"  {col['name']} {col_type}{nullable}{pk}")
+        lines.append(f"CREATE TABLE {table_name} (\n" + ",\n".join(cols) + "\n);")
+
+    return "\n\n".join(lines)
+
+
 def build_column_map(schema_info: dict) -> dict:
     """Build case-insensitive column name mapping, including snake_case variants.
 

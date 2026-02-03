@@ -168,3 +168,52 @@ class TestAgentImport:
     def test_build_agent_importable(self):
         from app.agent import build_agent
         assert callable(build_agent)
+
+
+class TestAblationPrompts:
+    """Tests for ablation study prompt selection (EXP-002).
+
+    These tests verify the get_ablation_prompt function correctly returns
+    the appropriate prompt template based on the ablation experiment type.
+    """
+
+    def test_zero_shot_returns_generic_prompt(self):
+        from app.config import (
+            get_ablation_prompt,
+            PROMPT_ZERO_SHOT,
+            GENERIC_PROMPT,
+        )
+        result = get_ablation_prompt(PROMPT_ZERO_SHOT)
+        assert result == GENERIC_PROMPT
+
+    def test_few_shot_returns_few_shot_prompt(self):
+        from app.config import (
+            get_ablation_prompt,
+            PROMPT_FEW_SHOT,
+            FEW_SHOT_PROMPT,
+        )
+        result = get_ablation_prompt(PROMPT_FEW_SHOT)
+        assert result == FEW_SHOT_PROMPT
+        assert "Example 1:" in result
+        assert "Example 2:" in result
+
+    def test_cot_returns_cot_prompt(self):
+        from app.config import (
+            get_ablation_prompt,
+            PROMPT_COT,
+            COT_PROMPT,
+        )
+        result = get_ablation_prompt(PROMPT_COT)
+        assert result == COT_PROMPT
+        assert "Reasoning:" in result
+        assert "Tables needed:" in result
+
+    def test_sqlcoder_overrides_ablation_type(self):
+        from app.config import (
+            get_ablation_prompt,
+            PROMPT_FEW_SHOT,
+            SQLCODER_PROMPT,
+        )
+        # sqlcoder should always use its specific prompt format
+        result = get_ablation_prompt(PROMPT_FEW_SHOT, model_name="sqlcoder:7b")
+        assert result == SQLCODER_PROMPT

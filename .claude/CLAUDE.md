@@ -97,7 +97,10 @@ This project uses notebooks in Sprint 1. The following protocol is mandatory:
 
 Sprint 2 uses Claude Code to write files directly (changed from Sprint 1 paste protocol). User reviews in IDE.
 
-- Explain **why** before creating or modifying each file
+**Collaboration workflow:** (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes.
+
+- Explain **what** and **why** before creating or modifying each file — describe the purpose, the specific changes, and how they fit the current task. Wait for approval before executing.
+- For approval prompts, use `AskUserQuestion` tool with Yes/No options instead of plain text "Should I proceed?" questions.
 - Write files directly using Claude Code tools
 - Build modules incrementally — one module at a time, tests alongside
 - Run `pytest tests/` after each module to verify before proceeding

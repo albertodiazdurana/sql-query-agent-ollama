@@ -290,15 +290,49 @@
 - **Reasoning:** Clarity 4 — the process is now well-documented across Entry 15 and 16. Applicability 4 — worked for two different blog topics. Completeness 4 — covers research, writing, visuals, distribution, and promotion. Efficiency 4 — the second post was faster because the workflow was established.
 - **Recommendation:** Add to the emerging Blog Style Guide: (1) Research step before drafting to find external data that supports claims. (2) LinkedIn comment strategy: main post = content, comment = call-to-action/links. (3) Artifact naming: `linkedin-post-{scope}.md` files include both post text and comment text.
 
+### Entry 17: Explain Before Acting — Context for Human Validation
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 2 | **Type:** Gap
+- **Context:** During Phase 2 implementation, the agent began adding tests for the ablation prompt function without first explaining what was being done and why. The human reviewer rejected the change, requesting context before code.
+- **Finding:** The "explain before acting" principle is critical for human-agent collaboration but isn't explicitly documented in DSM as a protocol.
+  - **What happened:** Agent made the code change (test additions) immediately after completing a previous task, without pausing to explain the purpose, why these specific tests, and how they relate to the ablation study.
+  - **Why it matters:** The human **wants and needs** context to evaluate whether the action is correct, necessary, and aligned with the plan. Without explanation, the human is reduced to a code reviewer rather than a collaborator.
+  - **Preferred workflow:** This is the desired collaboration style: (1) Agent explains what it will do and why, (2) Human reviews and approves, (3) Agent executes. This mirrors the notebook protocol but applies to all code changes.
+  - **DSM gap:** The "Notebook Collaboration Protocol" in CLAUDE.md mentions "Agent provides ONE cell at a time as a code/markdown block in conversation" but doesn't explicitly state "explain the purpose before generating the code."
+- **Scores:** Clarity 2, Applicability 4, Completeness 2, Efficiency 3 (Avg: 2.75)
+- **Reasoning:** Clarity 2 — the principle is implicit but not stated. Applicability 4 — the principle applies to all agent-human collaboration. Completeness 2 — neither DSM nor CLAUDE.md explicitly document this. Efficiency 3 — the rejection was quick but interrupted flow.
+- **Recommendation:** (1) Add "Explain before acting" as an explicit principle in DSM 4.0 Section 2.2 (Workflow Patterns) or as a new subsection. The principle: "Before generating code, files, or making changes, the agent should explain what it will do and why, giving the human opportunity to redirect or approve." (2) Update CLAUDE.md App Development Protocol to include: "Explain **what** and **why** before creating or modifying each file — not just the file name, but the purpose and how it fits the current task."
+
+### Entry 18: CLAUDE.md Updated — Explicit Collaboration Workflow
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 2 | **Type:** Success
+- **Context:** Following Entry 17's recommendation, updated `.claude/CLAUDE.md` to make the collaboration workflow explicit: (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes.
+- **Finding:** The updated CLAUDE.md now serves as a working example of how to configure human-agent collaboration for code writing projects.
+  - **What was added:** "Collaboration workflow: (1) Agent explains what and why, (2) Human reviews and approves, (3) Agent executes." Plus expanded the bullet point to: "Explain **what** and **why** before creating or modifying each file — describe the purpose, the specific changes, and how they fit the current task. Wait for approval before executing."
+  - **Reference for DSM:** This repo's `.claude/CLAUDE.md` can be referenced as a working example when documenting collaboration protocols in DSM 4.0. The evolution from implicit ("Explain why before...") to explicit three-step workflow demonstrates how project experience refines collaboration patterns.
+  - **Bi-directional workflow:** At the end of each project, DSM should read the project's CLAUDE.md as a reference to absorb successful collaboration patterns. This closes the feedback loop: DSM informs project setup → project refines patterns → patterns feed back to DSM.
+- **Scores:** Clarity 5, Applicability 5, Completeness 4, Efficiency 5 (Avg: 4.75)
+- **Reasoning:** Clarity 5 — the workflow is now explicit and numbered. Applicability 5 — applies immediately to this session and future sessions. Completeness 4 — covers the core loop but could expand on edge cases (e.g., when to skip approval for trivial changes). Efficiency 5 — the fix was immediate and requires no extra steps.
+- **Recommendation:** (1) Reference this repo's CLAUDE.md (`sql-query-agent-ollama/.claude/CLAUDE.md`) in DSM documentation as an example of explicit collaboration protocols. (2) Add to DSM sprint boundary checklist: "Review project's CLAUDE.md for collaboration patterns to absorb into DSM." This makes the bi-directional feedback loop explicit.
+
+### Entry 19: Use AskUserQuestion Tool for Approval Prompts
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 2 | **Type:** Gap
+- **Context:** When asking "Should I proceed?" the agent used plain text instead of the `AskUserQuestion` tool, which provides clickable Yes/No buttons for the user.
+- **Finding:** The collaboration workflow (explain → approve → execute) should use structured UI elements when available.
+  - **What happened:** Agent wrote "Should I proceed?" as text, requiring user to type response.
+  - **Better approach:** Use `AskUserQuestion` tool with Yes/No options — this shows buttons in the UI, making the approval step faster and clearer.
+  - **Tool benefit:** Buttons make the approval step unambiguous. Text responses can be misinterpreted or require more typing.
+- **Scores:** Clarity 3, Applicability 5, Completeness 2, Efficiency 2 (Avg: 3.0)
+- **Reasoning:** Clarity 3 — the need for structured approval wasn't obvious. Applicability 5 — applies every time approval is needed. Completeness 2 — CLAUDE.md doesn't mention tool usage for approvals. Efficiency 2 — text questions slow down the workflow.
+- **Recommendation:** (1) Update CLAUDE.md collaboration workflow to specify: "For approval prompts, use AskUserQuestion tool with Yes/No options instead of plain text questions." (2) Add to DSM 4.0: when the agent needs binary approval (proceed/stop), use structured prompts rather than free-text.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 16 |
-| Average score | 3.0 / 5 |
-| Gaps found | 9 |
+| Entries logged | 19 |
+| Average score | 3.1 / 5 |
+| Gaps found | 11 |
 | Pain points | 3 |
-| Successes | 4 |
+| Successes | 5 |
 
 ### Project-Specific DSM Adaptations
 1. Added Phase 0 (Research) before standard DSM_0 setup steps -- surveyed text-to-SQL state of the art to inform architecture and model selection

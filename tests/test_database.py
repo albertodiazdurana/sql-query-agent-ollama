@@ -3,6 +3,7 @@
 from app.database import (
     get_schema_info,
     get_sample_rows,
+    build_schema_text,
     build_column_map,
     postprocess_sql,
 )
@@ -107,3 +108,28 @@ class TestPostprocessSql:
         assert "LIKE" in result
         assert "ILIKE" not in result
         assert "NULLS" not in result
+
+
+class TestBuildSchemaText:
+    """Tests for build_schema_text() (EXP-002 ablation: schema context)."""
+
+    def test_builds_all_tables_when_no_filter(self, test_schema_info):
+        result = build_schema_text(test_schema_info)
+        assert "CREATE TABLE Artist" in result
+        assert "CREATE TABLE Album" in result
+
+    def test_builds_only_selected_tables(self, test_schema_info):
+        result = build_schema_text(test_schema_info, tables=["Artist"])
+        assert "CREATE TABLE Artist" in result
+        assert "CREATE TABLE Album" not in result
+
+    def test_includes_column_definitions(self, test_schema_info):
+        result = build_schema_text(test_schema_info, tables=["Album"])
+        assert "AlbumId" in result
+        assert "Title" in result
+        assert "ArtistId" in result
+
+    def test_ignores_unknown_tables(self, test_schema_info):
+        result = build_schema_text(test_schema_info, tables=["Artist", "NonExistent"])
+        assert "CREATE TABLE Artist" in result
+        assert "NonExistent" not in result
