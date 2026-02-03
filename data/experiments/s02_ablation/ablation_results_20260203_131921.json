@@ -1,0 +1,814 @@
+{
+  "experiment": "EXP-002",
+  "model": "llama3.1:8b",
+  "timestamp": "20260203_131921",
+  "summary": [
+    {
+      "config": "zero_shot_full",
+      "execution_accuracy": 7,
+      "syntax_validity": 14,
+      "avg_latency": 8.97
+    },
+    {
+      "config": "zero_shot_selective",
+      "execution_accuracy": 6,
+      "syntax_validity": 13,
+      "avg_latency": 12.17
+    },
+    {
+      "config": "few_shot_full",
+      "execution_accuracy": 5,
+      "syntax_validity": 14,
+      "avg_latency": 8.46
+    },
+    {
+      "config": "few_shot_selective",
+      "execution_accuracy": 6,
+      "syntax_validity": 14,
+      "avg_latency": 11.54
+    },
+    {
+      "config": "cot_full",
+      "execution_accuracy": 4,
+      "syntax_validity": 13,
+      "avg_latency": 7.78
+    },
+    {
+      "config": "cot_selective",
+      "execution_accuracy": 6,
+      "syntax_validity": 14,
+      "avg_latency": 11.37
+    }
+  ],
+  "best_config": "zero_shot_full",
+  "detailed_results": {
+    "zero_shot_full": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 10.92,
+        "final_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 2.19,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.26,
+        "final_sql": "SELECT Name, UnitPrice\nFROM Track\nORDER BY UnitPrice DESC\nLIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 3.6,
+        "final_sql": "SELECT COUNT(CustomerId)\nFROM Customer\nWHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.48,
+        "final_sql": "SELECT Name, Milliseconds\nFROM Track\nORDER BY Milliseconds DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 7.49,
+        "final_sql": "SELECT G.Name \nFROM Genre G \nJOIN Track T ON G.GenreId = T.GenreId \nGROUP BY G.Name \nORDER BY COUNT(T.TrackId) DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 14.8,
+        "final_sql": "SELECT \n  C.CustomerId,\n  SUM(IL.UnitPrice * IL.Quantity) AS TotalSpent\nFROM \n  Customer C\nJOIN \n  Invoice I ON C.CustomerId = I.CustomerId\nJOIN \n  InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\nGROUP BY \n  C.CustomerId\nORDER BY \n  TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 9.18,
+        "final_sql": "SELECT T1.Title \nFROM Album AS T1 \nJOIN Track AS T2 ON T1.AlbumId = T2.AlbumId \nGROUP BY T1.Title \nHAVING COUNT(T2.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 9.05,
+        "final_sql": "SELECT E.EmployeeId, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY NumCustomersSupported DESC",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 13.89,
+        "final_sql": "SELECT \n  g.Name AS Genre,\n  SUM(il.UnitPrice * il.Quantity) AS TotalRevenue\nFROM \n  InvoiceLine il\nJOIN \n  Track t ON il.TrackId = t.TrackId\nJOIN \n  Genre g ON t.GenreId = g.GenreId\nGROUP BY \n  g.Name\nORDER BY \n  TotalRevenue DESC\nLIMIT 3",
+        "error": null
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.59,
+        "final_sql": "SELECT A.Name \nFROM Artist AS A \nJOIN Track AS T ON A.ArtistId = T.GenreId \nGROUP BY A.Name \nHAVING COUNT(DISTINCT T.GenreId) > 2",
+        "error": null
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 11.9,
+        "final_sql": "SELECT c.*\nFROM Customer c\nWHERE c.CustomerId NOT IN (\n  SELECT il.InvoiceId\n  FROM InvoiceLine il\n  JOIN Track t ON il.TrackId = t.TrackId\n  JOIN Genre g ON t.GenreId = g.GenreId\n  WHERE g.Name = 'Jazz'\n)",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 10.28,
+        "final_sql": "SELECT \n  I.BillingCountry,\n  AVG(I.Total) AS AverageInvoiceTotal\nFROM \n  Invoice I\nGROUP BY \n  I.BillingCountry\nHAVING \n  COUNT(C.CustomerId) > 5",
+        "error": "(sqlite3.OperationalError) no such column: C.CustomerId\n[SQL: SELECT \n  I.BillingCountry,\n  AVG(I.Total) AS AverageInvoiceTotal\nFROM \n  Invoice I\nGROUP BY \n  I.BillingCountry\nHAVING \n  COUNT(C.CustomerId) > 5]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 14.98,
+        "final_sql": "SELECT \n  p.Name AS PlaylistName,\n  SUM((t.Milliseconds / 3600000.0)) AS TotalDurationHours\nFROM \n  PlaylistTrack pt\nJOIN \n  Track t ON pt.TrackId = t.TrackId\nJOIN \n  Playlist p ON pt.PlaylistId = p.PlaylistId\nGROUP BY \n  p.Name\nORDER BY \n  TotalDurationHours DESC\nLIMIT 3",
+        "error": null
+      }
+    ],
+    "zero_shot_selective": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.7,
+        "final_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 5.02,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": false,
+        "raw_parsable": false,
+        "latency": 7.35,
+        "final_sql": "SELECT TOP 1 TrackId, UnitPrice\nFROM Track\nORDER BY UnitPrice DESC",
+        "error": "(sqlite3.OperationalError) near \"1\": syntax error\n[SQL: SELECT TOP 1 TrackId, UnitPrice\nFROM Track\nORDER BY UnitPrice DESC]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.92,
+        "final_sql": "SELECT COUNT(CustomerId) \nFROM Customer \nWHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.57,
+        "final_sql": "SELECT Name, Milliseconds \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 10.48,
+        "final_sql": "SELECT G.Name \nFROM Genre G \nJOIN Track T ON G.GenreId = T.GenreId \nGROUP BY G.Name \nORDER BY COUNT(T.TrackId) DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 23.55,
+        "final_sql": "SELECT \n  C.CustomerId,\n  C.FirstName + ' ' + C.LastName AS CustomerName,\n  SUM(IL.UnitPrice * IL.Quantity) AS TotalSpent\nFROM \n  Invoice I\nJOIN \n  InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\nJOIN \n  Customer C ON I.CustomerId = C.CustomerId\nGROUP BY \n  C.CustomerId, C.FirstName, C.LastName\nORDER BY \n  TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 11.02,
+        "final_sql": "SELECT A.Title \nFROM Album AS A \nJOIN Track AS T ON A.AlbumId = T.AlbumId \nGROUP BY A.Title \nHAVING COUNT(T.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 11.99,
+        "final_sql": "SELECT E.FirstName, E.LastName, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY NumCustomersSupported DESC",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 13.36,
+        "final_sql": "SELECT \n  G.Name AS Genre,\n  SUM(T.UnitPrice * T.Bytes) / 1024 AS Revenue\nFROM \n  Track T\nJOIN \n  Genre G ON T.GenreId = G.GenreId\nGROUP BY \n  G.Name\nORDER BY \n  Revenue DESC\nLIMIT 3",
+        "error": null
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 15.51,
+        "final_sql": "SELECT T1.Name \nFROM Artist AS T1 \nJOIN Track AS T2 ON T1.ArtistId = T2.ArtistId \nGROUP BY T1.Name \nHAVING COUNT(DISTINCT T3.GenreId) > 2",
+        "error": "(sqlite3.OperationalError) no such column: T3.GenreId\n[SQL: SELECT T1.Name \nFROM Artist AS T1 \nJOIN Track AS T2 ON T1.ArtistId = T2.ArtistId \nGROUP BY T1.Name \nHAVING COUNT(DISTINCT T3.GenreId) > 2]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 17.76,
+        "final_sql": "SELECT c.*\nFROM Customer c\nWHERE c.CustomerId NOT IN (\n  SELECT pt.TrackId\n  FROM PlaylistTrack pt\n  JOIN Track t ON pt.TrackId = t.TrackId\n  JOIN Genre g ON t.GenreId = g.GenreId\n  WHERE g.Name = 'Jazz'\n)",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 14.24,
+        "final_sql": "SELECT \n  BillingCountry,\n  AVG(Total) AS AverageInvoiceTotal\nFROM Invoice\nGROUP BY BillingCountry\nHAVING COUNT(CustomerId) > 5",
+        "error": null
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 21.92,
+        "final_sql": "SELECT \n  P.Name,\n  SUM(T.Milliseconds / 3600000.0) AS TotalHours\nFROM \n  PlaylistTrack PT\nJOIN \n  Track T ON PT.TrackId = T.TrackId\nJOIN \n  Playlist P ON PT.PlaylistId = P.PlaylistId\nGROUP BY \n  P.Name\nORDER BY \n  TotalHours DESC\nLIMIT 3",
+        "error": null
+      }
+    ],
+    "few_shot_full": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 11.14,
+        "final_sql": "SELECT COUNT(*) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 1.66,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 2.82,
+        "final_sql": "SELECT TrackId FROM Track ORDER BY UnitPrice DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 2.59,
+        "final_sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.05,
+        "final_sql": "SELECT Name \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.08,
+        "final_sql": "SELECT GenreId \nFROM (\n  SELECT GenreId, COUNT(*) as TrackCount \n  FROM Track \n  GROUP BY GenreId\n) AS subquery \nORDER BY TrackCount DESC \nLIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 6.77,
+        "final_sql": "SELECT CustomerId, SUM(Total) AS TotalSpent\nFROM Invoice\nGROUP BY CustomerId\nORDER BY TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 7.52,
+        "final_sql": "SELECT Album.Title \nFROM Track \nJOIN Album ON Track.AlbumId = Album.AlbumId \nGROUP BY Album.Title \nHAVING COUNT(Track.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 9.62,
+        "final_sql": "SELECT E.FirstName, E.LastName, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY NumCustomersSupported DESC\nLIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 20.59,
+        "final_sql": "SELECT \n  G.Name AS GenreName,\n  SUM(IL.UnitPrice * IL.Quantity) AS TotalRevenue\nFROM \n  Track T\nJOIN \n  InvoiceLine IL ON T.TrackId = IL.TrackId\nJOIN \n  Album A ON T.AlbumId = A.AlbumId\nJOIN \n  Artist AR ON A.ArtistId = AR.ArtistId\nJOIN \n  Genre G ON T.GenreId = G.GenreId\nGROUP BY \n  G.Name\nORDER BY \n  TotalRevenue DESC\nLIMIT 3",
+        "error": null
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.83,
+        "final_sql": "SELECT DISTINCT A.Name \nFROM Artist AS A \nJOIN Track AS T ON A.ArtistId = T.GenreId \nGROUP BY A.Name \nHAVING COUNT(DISTINCT T.GenreId) > 2",
+        "error": null
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 12.05,
+        "final_sql": "SELECT DISTINCT C.CustomerId \nFROM Customer AS C \nJOIN Invoice AS I ON C.CustomerId = I.CustomerId \nLEFT JOIN InvoiceLine AS IL ON I.InvoiceId = IL.InvoiceId \nLEFT JOIN Track AS T ON IL.TrackId = T.TrackId \nWHERE T.GenreId IS NULL",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 9.7,
+        "final_sql": "SELECT \n  Invoice.BillingCountry,\n  AVG(Invoice.Total) AS AverageTotal\nFROM \n  Invoice\nGROUP BY \n  Invoice.BillingCountry\nHAVING \n  COUNT(DISTINCT Invoice.CustomerId) > 5",
+        "error": null
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 13.02,
+        "final_sql": "SELECT \n  Playlist.Name,\n  SUM(T2.Milliseconds / 3600000.0) AS TotalHours\nFROM \n  PlaylistTrack AS T1\nJOIN \n  Track AS T2 ON T1.TrackId = T2.TrackId\nGROUP BY \n  Playlist.Name\nORDER BY \n  TotalHours DESC\nLIMIT 3",
+        "error": "(sqlite3.OperationalError) no such column: Playlist.Name\n[SQL: SELECT \n  Playlist.Name,\n  SUM(T2.Milliseconds / 3600000.0) AS TotalHours\nFROM \n  PlaylistTrack AS T1\nJOIN \n  Track AS T2 ON T1.TrackId = T2.TrackId\nGROUP BY \n  Playlist.Name\nORDER BY \n  TotalHours DESC\nLIMIT 3]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      }
+    ],
+    "few_shot_selective": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.78,
+        "final_sql": "SELECT COUNT(*) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 5.57,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.43,
+        "final_sql": "SELECT Name FROM Track ORDER BY UnitPrice DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 7.01,
+        "final_sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.95,
+        "final_sql": "SELECT Name \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 10.3,
+        "final_sql": "SELECT G.Name \nFROM Genre G JOIN Track T ON G.GenreId = T.GenreId \nGROUP BY G.Name ORDER BY COUNT(T.TrackId) DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 13.53,
+        "final_sql": "SELECT CustomerId, SUM(Total) AS TotalSpent\nFROM Invoice\nGROUP BY CustomerId\nORDER BY TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 11.58,
+        "final_sql": "SELECT Album.Title \nFROM Album \nJOIN Track ON Album.AlbumId = Track.AlbumId \nGROUP BY Album.Title \nHAVING COUNT(Track.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 13.66,
+        "final_sql": "SELECT E.FirstName, E.LastName, COUNT(C.CustomerId) AS NumCustomersSupported\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY NumCustomersSupported DESC\nLIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 10.85,
+        "final_sql": "SELECT Name, SUM(UnitPrice * Bytes) AS Revenue\nFROM Track\nJOIN Genre ON Track.GenreId = Genre.GenreId\nGROUP BY Name\nORDER BY Revenue DESC\nLIMIT 3",
+        "error": "(sqlite3.OperationalError) ambiguous column name: Name\n[SQL: SELECT Name, SUM(UnitPrice * Bytes) AS Revenue\nFROM Track\nJOIN Genre ON Track.GenreId = Genre.GenreId\nGROUP BY Name\nORDER BY Revenue DESC\nLIMIT 3]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 16.32,
+        "final_sql": "SELECT DISTINCT A.Name \nFROM Artist A \nJOIN Track T ON A.ArtistId = T.ArtistId \nGROUP BY A.Name, T.GenreId \nHAVING COUNT(DISTINCT T.GenreId) > 2",
+        "error": "(sqlite3.OperationalError) no such column: T.ArtistId\n[SQL: SELECT DISTINCT A.Name \nFROM Artist A \nJOIN Track T ON A.ArtistId = T.ArtistId \nGROUP BY A.Name, T.GenreId \nHAVING COUNT(DISTINCT T.GenreId) > 2]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 18.91,
+        "final_sql": "SELECT c.CustomerId \nFROM Customer c \nLEFT JOIN PlaylistTrack pt ON c.CustomerId = pt.PlaylistId \nLEFT JOIN Track t ON pt.TrackId = t.TrackId \nWHERE t.GenreId IS NULL OR t.GenreId NOT IN ( SELECT GenreId FROM Genre WHERE Name = 'Jazz' )",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 15.14,
+        "final_sql": "SELECT \n  BillingCountry,\n  AVG(Total) AS AverageInvoiceTotal\nFROM Invoice\nGROUP BY BillingCountry\nHAVING COUNT(DISTINCT CustomerId) > 5",
+        "error": null
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 20.57,
+        "final_sql": "SELECT \n  P.Name,\n  SUM(T.Milliseconds / 3600000.0) AS TotalDurationHours\nFROM \n  PlaylistTrack PT\nJOIN \n  Track T ON PT.TrackId = T.TrackId\nJOIN \n  Playlist P ON PT.PlaylistId = P.PlaylistId\nGROUP BY \n  P.Name\nORDER BY \n  TotalDurationHours DESC\nLIMIT 3",
+        "error": null
+      }
+    ],
+    "cot_full": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 11.04,
+        "final_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 1.63,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 3.03,
+        "final_sql": "SELECT TrackId FROM Track ORDER BY UnitPrice DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 3.43,
+        "final_sql": "SELECT COUNT(CustomerId) \nFROM Customer \nWHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": false,
+        "raw_parsable": false,
+        "latency": 3.58,
+        "final_sql": "SELECT TOP 5 TrackId, Milliseconds FROM Track ORDER BY Milliseconds DESC",
+        "error": "(sqlite3.OperationalError) near \"5\": syntax error\n[SQL: SELECT TOP 5 TrackId, Milliseconds FROM Track ORDER BY Milliseconds DESC]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.61,
+        "final_sql": "SELECT T3.Name FROM Track AS T1 INNER JOIN Genre AS T2 ON T1.GenreId = T2.GenreId GROUP BY T2.GenreId ORDER BY COUNT(T1.TrackId) DESC LIMIT 1",
+        "error": "(sqlite3.OperationalError) no such column: T3.Name\n[SQL: SELECT T3.Name FROM Track AS T1 INNER JOIN Genre AS T2 ON T1.GenreId = T2.GenreId GROUP BY T2.GenreId ORDER BY COUNT(T1.TrackId) DESC LIMIT 1]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 5.99,
+        "final_sql": "SELECT CustomerId, SUM(Total) AS TotalSpent\nFROM Invoice\nGROUP BY CustomerId\nORDER BY TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.0,
+        "final_sql": "SELECT T1.Title \nFROM Album AS T1 \nJOIN Track AS T2 ON T1.AlbumId = T2.AlbumId \nGROUP BY T1.Title \nHAVING COUNT(T2.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 7.63,
+        "final_sql": "SELECT E.EmployeeId, COUNT(C.CustomerId) AS NumCustomers\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY NumCustomers DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 9.79,
+        "final_sql": "SELECT Genre.Name, SUM(InvoiceLine.UnitPrice * InvoiceLine.Quantity) AS Revenue\nFROM Track\nJOIN Genre ON Track.GenreId = Genre.GenreId\nJOIN InvoiceLine ON Track.TrackId = InvoiceLine.TrackId\nGROUP BY Genre.Name\nORDER BY Revenue DESC\nLIMIT 3",
+        "error": null
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.51,
+        "final_sql": "SELECT T1.Name \nFROM Artist AS T1 \nJOIN Track AS T2 ON T1.ArtistId = T2.AlbumId \nGROUP BY T1.Name \nHAVING COUNT(DISTINCT T2.GenreId) > 2",
+        "error": null
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 11.63,
+        "final_sql": "SELECT DISTINCT C.CustomerId \nFROM Customer AS C\nWHERE C.CustomerId NOT IN (\n  SELECT IL.InvoiceId \n  FROM InvoiceLine AS IL\n  JOIN Track AS T ON IL.TrackId = T.TrackId\n  JOIN Genre AS G ON T.GenreId = G.GenreId\n  WHERE G.Name = 'Jazz'\n)",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 8.15,
+        "final_sql": "SELECT \n  I.BillingCountry,\n  AVG(I.Total) AS AverageInvoiceTotal\nFROM \n  Invoice I\nGROUP BY \n  I.BillingCountry\nHAVING \n  COUNT(C.CustomerId) > 5",
+        "error": "(sqlite3.OperationalError) no such column: C.CustomerId\n[SQL: SELECT \n  I.BillingCountry,\n  AVG(I.Total) AS AverageInvoiceTotal\nFROM \n  Invoice I\nGROUP BY \n  I.BillingCountry\nHAVING \n  COUNT(C.CustomerId) > 5]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 17.9,
+        "final_sql": "SELECT PlaylistId, SUM(TotalMilliseconds / 3600) AS TotalHours\nFROM (\n  SELECT p.PlaylistId, t.Milliseconds * il.Quantity AS TotalMilliseconds\n  FROM PlaylistTrack pt\n  JOIN Track t ON pt.TrackId = t.TrackId\n  JOIN InvoiceLine il ON t.TrackId = il.TrackId\n  GROUP BY p.PlaylistId\n) subquery\nGROUP BY PlaylistId\nORDER BY TotalHours DESC\nLIMIT 3",
+        "error": "(sqlite3.OperationalError) no such column: p.PlaylistId\n[SQL: SELECT PlaylistId, SUM(TotalMilliseconds / 3600) AS TotalHours\nFROM (\n  SELECT p.PlaylistId, t.Milliseconds * il.Quantity AS TotalMilliseconds\n  FROM PlaylistTrack pt\n  JOIN Track t ON pt.TrackId = t.TrackId\n  JOIN InvoiceLine il ON t.TrackId = il.TrackId\n  GROUP BY p.PlaylistId\n) subquery\nGROUP BY PlaylistId\nORDER BY TotalHours DESC\nLIMIT 3]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      }
+    ],
+    "cot_selective": [
+      {
+        "query_id": "E1",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.52,
+        "final_sql": "SELECT COUNT(EmployeeId) FROM Employee",
+        "error": null
+      },
+      {
+        "query_id": "E2",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 4.86,
+        "final_sql": "SELECT Name FROM MediaType",
+        "error": null
+      },
+      {
+        "query_id": "E3",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.97,
+        "final_sql": "SELECT Name, UnitPrice FROM Track ORDER BY UnitPrice DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "E4",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.73,
+        "final_sql": "SELECT COUNT(CustomerId) FROM Customer WHERE Country = 'Brazil'",
+        "error": null
+      },
+      {
+        "query_id": "E5",
+        "difficulty": "Easy",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 6.44,
+        "final_sql": "SELECT Name, Milliseconds \nFROM Track \nORDER BY Milliseconds DESC \nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M1",
+        "difficulty": "Medium",
+        "execution_accurate": true,
+        "raw_parsable": true,
+        "latency": 8.12,
+        "final_sql": "SELECT Name FROM Genre WHERE GenreId = ( SELECT GenreId FROM Track GROUP BY GenreId ORDER BY COUNT(TrackId) DESC LIMIT 1 )",
+        "error": null
+      },
+      {
+        "query_id": "M2",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 12.78,
+        "final_sql": "SELECT CustomerId, SUM(Total) AS TotalSpent\nFROM Invoice\nGROUP BY CustomerId\nORDER BY TotalSpent DESC\nLIMIT 5",
+        "error": null
+      },
+      {
+        "query_id": "M3",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 10.6,
+        "final_sql": "SELECT A.Title \nFROM Album AS A \nJOIN Track AS T ON A.AlbumId = T.AlbumId \nGROUP BY A.Title \nHAVING COUNT(T.TrackId) > 20",
+        "error": null
+      },
+      {
+        "query_id": "M4",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 12.02,
+        "final_sql": "SELECT E.FirstName, E.LastName, COUNT(C.CustomerId) AS TotalCustomers\nFROM Employee E\nJOIN Customer C ON E.EmployeeId = C.SupportRepId\nGROUP BY E.EmployeeId\nORDER BY TotalCustomers DESC LIMIT 1",
+        "error": null
+      },
+      {
+        "query_id": "M5",
+        "difficulty": "Medium",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 12.09,
+        "final_sql": "SELECT T1.Name, SUM(T2.UnitPrice) AS TotalRevenue\nFROM Genre AS T1\nJOIN Track AS T2 ON T1.GenreId = T2.GenreId\nGROUP BY T1.Name\nORDER BY TotalRevenue DESC\nLIMIT 3",
+        "error": null
+      },
+      {
+        "query_id": "H1",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 15.71,
+        "final_sql": "SELECT T1.Name \nFROM Artist AS T1 \nJOIN Track AS T2 ON T1.ArtistId = T2.ArtistId \nGROUP BY T1.Name \nHAVING COUNT(DISTINCT T2.GenreId) > 2",
+        "error": "(sqlite3.OperationalError) no such column: T2.ArtistId\n[SQL: SELECT T1.Name \nFROM Artist AS T1 \nJOIN Track AS T2 ON T1.ArtistId = T2.ArtistId \nGROUP BY T1.Name \nHAVING COUNT(DISTINCT T2.GenreId) > 2]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      {
+        "query_id": "H2",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 18.95,
+        "final_sql": "SELECT c.CustomerId \nFROM Customer AS c\nWHERE c.CustomerId NOT IN (\n  SELECT pt.PlaylistId \n  FROM PlaylistTrack AS pt\n  JOIN Track AS t ON pt.TrackId = t.TrackId\n  JOIN Genre AS g ON t.GenreId = g.GenreId\n  WHERE g.Name = 'Jazz'\n)",
+        "error": null
+      },
+      {
+        "query_id": "H3",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 13.46,
+        "final_sql": "SELECT \n  BillingCountry,\n  AVG(Total) AS AverageInvoiceTotal\nFROM Invoice\nGROUP BY BillingCountry\nHAVING COUNT(CustomerId) > 5",
+        "error": null
+      },
+      {
+        "query_id": "H4",
+        "difficulty": "Hard",
+        "execution_accurate": false,
+        "raw_parsable": true,
+        "latency": 25.91,
+        "final_sql": "SELECT PlaylistId, SUM(TotalMilliseconds / 3600) AS TotalHours\nFROM (\n  SELECT p.PlaylistId, t.Milliseconds * il.Quantity AS TotalMilliseconds\n  FROM PlaylistTrack pt\n  JOIN Track t ON pt.TrackId = t.TrackId\n  JOIN InvoiceLine il ON t.TrackId = il.TrackId\n  JOIN Invoice i ON il.InvoiceId = i.InvoiceId\n  JOIN Customer c ON i.CustomerId = c.CustomerId\n) AS Subquery\nGROUP BY PlaylistId\nORDER BY TotalHours DESC\nLIMIT 3",
+        "error": "(sqlite3.OperationalError) no such column: p.PlaylistId\n[SQL: SELECT PlaylistId, SUM(TotalMilliseconds / 3600) AS TotalHours\nFROM (\n  SELECT p.PlaylistId, t.Milliseconds * il.Quantity AS TotalMilliseconds\n  FROM PlaylistTrack pt\n  JOIN Track t ON pt.TrackId = t.TrackId\n  JOIN InvoiceLine il ON t.TrackId = il.TrackId\n  JOIN Invoice i ON il.InvoiceId = i.InvoiceId\n  JOIN Customer c ON i.CustomerId = c.CustomerId\n) AS Subquery\nGROUP BY PlaylistId\nORDER BY TotalHours DESC\nLIMIT 3]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      }
+    ]
+  }
+}

@@ -40,70 +40,74 @@
 
 ---
 
-## Blog Part 3: Ablation Study (Planned)
+## Blog Part 3: Ablation Study (Ready to Write)
 
-**Working Title:** "What 56 Experiments Taught Me About Prompt Engineering for Text-to-SQL"
+**Working Title:** "What 84 Experiments Taught Me About Prompt Engineering — And Why the Research Was Wrong"
+
+### Hook: Counter-Intuitive Results
+
+The literature says: add few-shot examples (+10-15% accuracy), use chain-of-thought reasoning, filter schema to reduce noise. Our data says: **the opposite**.
+
+### Results Summary (EXP-002)
+
+| Configuration | EX | VV | Latency |
+|--------------|-----|-----|---------|
+| **zero_shot_full** | **7/14 (50%)** | 14/14 | 8.97s |
+| zero_shot_selective | 6/14 (43%) | 13/14 | 12.17s |
+| few_shot_full | 5/14 (36%) | 14/14 | 8.46s |
+| few_shot_selective | 6/14 (43%) | 14/14 | 11.54s |
+| cot_full | 4/14 (29%) | 13/14 | 7.78s |
+| cot_selective | 6/14 (43%) | 14/14 | 11.37s |
+
+**Winner:** Zero-shot with full schema (50% EX)
+**Loser:** Chain-of-thought with full schema (29% EX)
+**Delta:** 21 percentage points — enormous for a prompt-only change
+
+### Key Findings
+
+1. **Few-shot examples hurt:** Adding 2 examples *reduced* accuracy by 14pp (50% → 36%)
+2. **CoT reasoning hurt:** The reasoning scaffold was the worst performer (29%)
+3. **More context is better:** Full schema beat selective despite adding "noise"
+4. **Baseline improvement:** 50% EX vs 42.9% EXP-001 baseline (+7.1pp)
+
+### Why This Happened (Hypothesis)
+
+- **Few-shot examples anchored on wrong patterns:** The static examples (employee count, AC/DC albums) may have misled the model on unrelated queries
+- **CoT consumed context without adding value:** The reasoning scaffold diluted focus on SQL generation
+- **Selective filtering removed needed tables:** The keyword-based filter cut tables required for JOINs
 
 ### Research Context
 
 From `docs/research/ablation-study-design.md`:
 
-**Text-to-SQL Evaluation Metrics:**
-- Execution Accuracy (EX) — primary metric
-- Exact Match (EM) — strict, penalizes valid alternatives
-- Valid Efficiency Score (VES) — syntax + efficiency
-- Test-suite Accuracy (TS) — robustness
-
 **AbGen Framework (ACL 2025):**
 - Importance, Faithfulness, Soundness criteria
-- GPT-4o and Llama-3.1 show gaps vs human experts
+- Our findings: llama3.1:8b behaves differently than GPT-4o
 
-### Ablation Matrix
+**Spider Benchmark:**
+- Few-shot typically +10-20% at 7B scale — not observed here
+- Model-specific behavior matters more than general patterns
 
-| Experiment | Variable | Values |
-|------------|----------|--------|
-| E1 | Prompt structure | Zero-shot, Few-shot, CoT |
-| E2 | Few-shot selection | 0, 2, 3 examples |
-| E3 | Schema context | Full, Selective |
+### Blog Angles
 
-### Prompt Variants Implemented
+1. **Counter-intuitive finding:** "The research was wrong (for this model)" — lead with surprise
+2. **Empirical validation:** "Why I ran 84 experiments instead of trusting the literature"
+3. **Null results are results:** "What happens when prompt engineering fails"
+4. **Practical recommendation:** "Start simple — zero-shot + full context"
 
-**Zero-shot (baseline):**
-```
-You are a SQL expert. Generate a SQLite-compatible SELECT query...
-```
+### Data Collected
 
-**Few-shot (2 examples):**
-```
-Example 1: How many employees are there?
-SQL: SELECT COUNT(*) FROM Employee;
+- [x] EX scores for each configuration
+- [x] Latency measurements
+- [x] Syntax validity (VV) scores
+- [x] Best vs worst configuration delta (21pp)
+- [x] Comparison with EXP-001 baseline (+7.1pp improvement)
 
-Example 2: What are the names of all albums by 'AC/DC'?
-SQL: SELECT Album.Title FROM Album JOIN Artist...
-```
+### Artifacts
 
-**Chain-of-thought:**
-```
-Reasoning:
-1. Tables needed:
-2. Columns to select:
-3. Joins/filters/aggregations:
-```
-
-### Potential Blog Angles
-
-1. **Counter-intuitive finding angle:** "Few-shot prompting didn't help" (if that's the result)
-2. **Systematic comparison angle:** "How to design an ablation study for prompt engineering"
-3. **Reproducibility angle:** "Making LLM experiments reproducible with fixed seeds"
-4. **Null result angle:** "What happens when prompt engineering doesn't work"
-
-### Data to Collect
-
-- [ ] EX scores for each configuration
-- [ ] Latency measurements
-- [ ] Error categorization (syntax, table hallucination, logic)
-- [ ] Best vs worst configuration delta
-- [ ] Confidence intervals / variance
+- Results JSON: `data/experiments/s02_ablation/ablation_results_20260203_131921.json`
+- Experiment README: `data/experiments/s02_ablation/README.md`
+- Research notes: `docs/research/ablation-study-design.md`
 
 ---
 

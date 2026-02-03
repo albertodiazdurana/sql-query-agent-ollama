@@ -324,15 +324,29 @@
 - **Reasoning:** Clarity 3 — the need for structured approval wasn't obvious. Applicability 5 — applies every time approval is needed. Completeness 2 — CLAUDE.md doesn't mention tool usage for approvals. Efficiency 2 — text questions slow down the workflow.
 - **Recommendation:** (1) Update CLAUDE.md collaboration workflow to specify: "For approval prompts, use AskUserQuestion tool with Yes/No options instead of plain text questions." (2) Add to DSM 4.0: when the agent needs binary approval (proceed/stop), use structured prompts rather than free-text.
 
+### Entry 20: Ablation Study — Counter-Intuitive Findings on Prompt Engineering
+- **Date:** 2026-02-03 | **Sprint:** S2 Phase 2 | **Type:** Success
+- **Context:** Ran EXP-002 ablation study testing 6 prompt configurations (3 prompt types × 2 schema types) across 14 queries. Total: 84 experimental runs. The study followed methodology from AbGen framework (ACL 2025) and documented research in `docs/research/ablation-study-design.md`.
+- **Finding:** The ablation study produced counter-intuitive results that contradict common prompt engineering assumptions:
+  - **Few-shot hurt performance:** Few-shot_full (35.7%) < Zero-shot_full (50.0%). Adding 2 examples reduced accuracy.
+  - **Chain-of-thought hurt performance:** CoT_full (28.6%) was the worst configuration. Reasoning scaffold diluted SQL generation focus.
+  - **Full schema better than selective:** Despite adding "noise," full schema (all 11 tables) consistently outperformed selective filtering.
+  - **Best config:** Zero-shot with full schema achieved 50% EX — 7.1pp improvement over EXP-001 baseline.
+  - **New limitations identified:** LIM-007 (few-shot hurts 8B models), LIM-008 (CoT hurts 8B models).
+- **Why this matters for DSM:** The experiment demonstrates the value of empirical validation over literature assumptions. Research suggested few-shot and CoT would help; our data shows the opposite for llama3.1:8b on this task. This validates DSM's experiment framework (C.1.3, C.1.5) — without systematic measurement, we would have implemented the wrong prompt strategy.
+- **Scores:** Clarity 5, Applicability 5, Completeness 5, Efficiency 5 (Avg: 5.0)
+- **Reasoning:** Clarity 5 — ablation results are unambiguous. Applicability 5 — directly informed production configuration choice. Completeness 5 — covered all planned configurations with documented methodology. Efficiency 5 — 84 runs completed in ~15 minutes with automated runner.
+- **Recommendation:** (1) Add "ablation study" as a recommended step in DSM experiment workflow when comparing prompt strategies. (2) Document the pattern: "empirical validation over literature assumptions" as a principle in DSM 4.0. (3) Reference EXP-002 as an example of productive null results — showing what doesn't work is as valuable as showing what does.
+
 ### Summary Metrics
 
 | Metric | Value |
 |--------|-------|
-| Entries logged | 19 |
-| Average score | 3.1 / 5 |
+| Entries logged | 20 |
+| Average score | 3.2 / 5 |
 | Gaps found | 11 |
 | Pain points | 3 |
-| Successes | 5 |
+| Successes | 6 |
 
 ### Project-Specific DSM Adaptations
 1. Added Phase 0 (Research) before standard DSM_0 setup steps -- surveyed text-to-SQL state of the art to inform architecture and model selection
