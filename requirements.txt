@@ -15,3 +15,5 @@ jupyter
 
 # Frontend (Sprint 2)
 streamlit
+pandas
+requests

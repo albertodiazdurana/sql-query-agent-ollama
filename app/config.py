@@ -5,6 +5,7 @@ run_experiment.py. Single source of truth for the Streamlit app, agent,
 and evaluation scripts.
 """
 
+import os
 from pathlib import Path
 
 # ──────────────────────────────────────────────────────────────
@@ -16,7 +17,8 @@ DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "chinook.db"
 # ──────────────────────────────────────────────────────────────
 # Ollama connection
 # ──────────────────────────────────────────────────────────────
-OLLAMA_BASE_URL = "http://172.27.64.1:11434"
+# Use environment variable for Docker, fallback to WSL gateway for local dev
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://172.27.64.1:11434")
 
 # ──────────────────────────────────────────────────────────────
 # Model defaults (DEC-005: llama3.1:8b recommended)

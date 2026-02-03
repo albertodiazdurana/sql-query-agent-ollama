@@ -1,0 +1,73 @@
+# SQL Query Agent - Docker Compose
+#
+# Usage:
+#   docker-compose up              # Start app + Ollama
+#   docker-compose up -d           # Start in background
+#   docker-compose logs -f app     # View app logs
+#   docker-compose down            # Stop all containers
+#
+# First run will download llama3.1:8b (~4.6GB)
+#
+# GPU support (NVIDIA):
+#   Uncomment the 'deploy' section in the ollama service
+
+services:
+  # Streamlit application
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Ollama LLM server
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    # Uncomment for NVIDIA GPU support:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Model loader - pulls llama3.1:8b on first run
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Checking for llama3.1:8b model..."
+        if ! ollama list | grep -q "llama3.1:8b"; then
+          echo "Pulling llama3.1:8b (this may take a while)..."
+          ollama pull llama3.1:8b
+        else
+          echo "Model already available"
+        fi
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    restart: "no"
+
+volumes:
+  ollama_data:
