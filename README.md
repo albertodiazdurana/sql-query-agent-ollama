@@ -158,10 +158,22 @@ sql-query-agent-ollama/
 │   ├── research/         # State-of-art research
 │   ├── feedback/         # DSM methodology feedback
 │   └── blog/             # Blog materials and drafts
-├── tests/                # Tests (Sprint 2)
+├── tests/                # Unit tests (pytest)
 ├── requirements.txt
 └── README.md
 ```
+
+## Testing
+
+Run the test suite with:
+
+```bash
+PYTHONPATH=. pytest tests/ -v
+```
+
+The test suite (33 tests) covers:
+- **`test_database.py`** — Schema introspection, column map building, SQL post-processing
+- **`test_agent.py`** — Query validation, routing logic, schema filtering, security (blocked keywords)
 
 ## Evaluation Framework
 
