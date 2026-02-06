@@ -42,14 +42,14 @@ Key design decisions:
 - **Schema Awareness**: Understands your database structure for accurate queries
 - **Self-Correction**: Retries with error context if SQL generation fails
 - **Evaluation Framework**: Systematic model comparison with standardized metrics
-- **Streamlit UI**: User-friendly web interface (Sprint 2)
+- **Streamlit UI**: User-friendly web interface with schema explorer
 
 ## Tech Stack
 
 - **LLM Runtime**: [Ollama](https://ollama.ai/)
 - **Agent Framework**: [LangChain](https://python.langchain.com/) + [LangGraph](https://langchain-ai.github.io/langgraph/)
 - **SQL Validation**: [SQLGlot](https://github.com/tobymao/sqlglot)
-- **Frontend**: Streamlit (Sprint 2)
+- **Frontend**: [Streamlit](https://streamlit.io/)
 - **Database**: SQLite (with potential for PostgreSQL/MySQL support)
 - **Language**: Python 3.10+
 
@@ -228,14 +228,15 @@ sql-query-agent-ollama/
 ├── data/
 │   ├── chinook.db        # Chinook SQLite sample database (11 tables)
 │   └── experiments/      # Experiment artifacts (DSM C.1.6)
-│       └── s01_d02_exp001/  # EXP-001: Model comparison
+│       ├── s01_d02_exp001/  # EXP-001: Model comparison
+│       └── s02_ablation/    # EXP-002: Prompt ablation study
 ├── docs/
 │   ├── plans/            # Sprint plans
-│   ├── decisions/        # Decision log (DEC-001 through DEC-005)
-│   ├── checkpoints/      # Milestone checkpoints
+│   ├── decisions/        # Decision log (DEC-001 through DEC-008)
+│   ├── checkpoints/      # Milestone checkpoints (7 total)
 │   ├── research/         # State-of-art research
-│   ├── feedback/         # DSM methodology feedback
-│   └── blog/             # Blog materials and drafts
+│   ├── feedback/         # DSM methodology feedback (22 entries)
+│   └── blog/             # Blog posts, LinkedIn posts, images
 ├── tests/                # Unit tests (pytest)
 ├── requirements.txt
 └── README.md
@@ -306,7 +307,7 @@ This project is one of two active case studies for the [Data Science Methodology
 
 DSM shapes how this project is organized:
 
-- **Decision log** ([`docs/decisions/`](docs/decisions/)) — Numbered records (DEC-001 through DEC-005) capturing architectural choices with context, alternatives considered, and rationale. Decisions are referenced throughout the codebase.
+- **Decision log** ([`docs/decisions/`](docs/decisions/)) — Numbered records (DEC-001 through DEC-008) capturing architectural choices with context, alternatives considered, and rationale. Decisions are referenced throughout the codebase.
 - **Experiment templates** — Each evaluation follows a structured template with pre-defined hypotheses, rejection criteria, metrics, and limitation discovery (see [EXP-001](data/experiments/s01_d02_exp001/README.md)).
 - **Limitation registries** — Experiments produce numbered limitations (LIM-###) with severity and disposition, feeding directly into the next sprint's backlog.
 - **Sprint boundary checklists** — Checkpoints ([`docs/checkpoints/`](docs/checkpoints/)), methodology feedback ([`docs/feedback/`](docs/feedback/)), and blog materials ([`docs/blog/`](docs/blog/)) are produced at each sprint boundary.
