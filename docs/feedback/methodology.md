@@ -2,8 +2,8 @@
 
 **Project:** SQL Query Agent with Ollama
 **Author:** Alberto
-**Date:** 2026-02-01 (started, finalized at project end)
-**Duration:** Ongoing
+**Date:** 2026-02-01 (started) — 2026-02-03 (finalized)
+**Duration:** 3 days (Sprint 1: Feb 1–2, Sprint 2: Feb 2–3)
 
 ---
 
@@ -11,10 +11,10 @@
 
 | Item | Planned | Actual |
 |------|---------|--------|
-| **Objective** | NL-to-SQL agent with local LLMs via Ollama | Sprint 1 complete — agent built, evaluated, model selected |
-| **Dataset** | Sample SQLite database (Chinook) | Active — 11 tables, 3,503 tracks |
-| **Timeline** | Sprint 1 (notebook) + Sprint 2 (Streamlit) | Sprint 1 complete — ready for Sprint 2 |
-| **Deliverables** | Notebook prototype + Streamlit app + blog | Notebook: 32 cells, eval scripts, EXP-001 results |
+| **Objective** | NL-to-SQL agent with local LLMs via Ollama | Complete — agent built, evaluated, deployed as Streamlit app |
+| **Dataset** | Sample SQLite database (Chinook) | 11 tables, 3,503 tracks |
+| **Timeline** | Sprint 1 (notebook) + Sprint 2 (Streamlit) | Both sprints complete (3 days) |
+| **Deliverables** | Notebook prototype + Streamlit app + blog | Notebook (32 cells), Streamlit app (Docker), 2 experiments (EXP-001, EXP-002), 3 blog posts + 3 LinkedIn posts |
 
 ---
 
@@ -97,25 +97,69 @@
 
 | Library | Version | Purpose |
 |---------|---------|---------|
-| langchain | TBD | LLM orchestration |
-| langchain-ollama | TBD | Ollama integration |
-| langgraph | TBD | Agent state graph |
-| sqlalchemy | TBD | Database connectivity |
-| sqlglot | TBD | SQL validation pre-execution |
-| jupyter | TBD | Notebook experimentation |
-| streamlit | TBD | Web UI (Sprint 2) |
+| langchain | 1.2.7 | LLM orchestration |
+| langchain-ollama | 1.0.1 | Ollama integration |
+| langgraph | 1.0.7 | Agent state graph |
+| sqlalchemy | 2.0.46 | Database connectivity |
+| sqlglot | 28.7.0 | SQL validation pre-execution |
+| streamlit | 1.53.1 | Web UI |
+| pandas | 2.3.3 | Data handling |
 
 ---
 
 ## 4. Final Results
 
-*To be completed at project end.*
+| Metric | Sprint 1 | Sprint 2 (Final) |
+|--------|----------|-------------------|
+| **Execution Accuracy** | 42.9% (EXP-001) | 50.0% (EXP-002) |
+| **Best Config** | llama3.1:8b, zero-shot | Zero-shot + full schema |
+| **Test Suite** | 14 queries (5E/5M/4H) | Same |
+| **Unit Tests** | — | 33/33 passing |
+| **Architecture** | 5-node LangGraph | 6-node LangGraph (+ postprocess) |
+| **Deployment** | Notebook only | Streamlit + Docker |
+| **Blog Posts** | 1 published | 3 published + 3 LinkedIn posts |
+| **DSM Feedback Entries** | 13 | 22 |
+| **Decision Records** | DEC-001 to DEC-005 | DEC-001 to DEC-008 |
+| **Limitations Documented** | LIM-001 to LIM-006 | LIM-001 to LIM-008 |
 
 ---
 
 ## 5. Project Structure (Final)
 
-*To be documented at project end.*
+```
+sql-query-agent-ollama/
+├── .claude/CLAUDE.md
+├── app/
+│   ├── __init__.py
+│   ├── agent.py          # AgentState, 6 LangGraph nodes, graph builder
+│   ├── config.py          # Prompts, constants, model configuration
+│   ├── database.py        # DB engine, schema introspection, post-processing
+│   └── main.py            # Streamlit application
+├── notebooks/
+│   └── 01_sql_agent_exploration.ipynb  # Sprint 1 prototype (32 cells)
+├── data/
+│   ├── chinook.db         # Sample database (11 tables)
+│   └── experiments/       # EXP-001, EXP-002 artifacts and results
+├── scripts/
+│   └── eval_harness.py    # Evaluation harness
+├── tests/
+│   ├── conftest.py
+│   ├── test_agent.py      # 17 tests
+│   └── test_database.py   # 16 tests
+├── docs/
+│   ├── plans/             # PLAN.md, sprint plans
+│   ├── research/          # State-of-art survey, ablation study design
+│   ├── decisions/         # DEC-001 to DEC-008
+│   ├── checkpoints/       # 7 milestone checkpoints
+│   ├── backlog/           # DSM alignment reports
+│   ├── feedback/          # methodology.md, backlogs.md
+│   ├── blog/              # 3 blog posts, 3 LinkedIn posts, images
+│   └── _references/       # External references
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+```
 
 ---
 
@@ -123,16 +167,28 @@
 
 | Aspect | Planned | Actual | Delta |
 |--------|---------|--------|-------|
-| *To be filled as project progresses* | | | |
+| **Timeline** | 2 sprints | 2 sprints, 3 days | On track |
+| **Model** | Compare sqlcoder + llama3.1 | Both compared; llama3.1:8b selected | As planned |
+| **Accuracy target** | ≥60% EX | 50% EX | -10pp (Hard queries: 0%) |
+| **Evaluation** | Ad-hoc metrics | DSM experiment framework (C.1.3) | Better than planned |
+| **Ablation study** | Not originally planned | 84 experiments, counter-intuitive findings | Scope added, high value |
+| **Blog** | 1 post per sprint | 3 posts + 3 LinkedIn posts | Exceeded plan |
+| **Docker** | Not originally planned | Dockerfile + docker-compose | Scope added |
+| **DSM feedback** | Required by methodology | 22 entries, 12 gaps, 10 backlog proposals | Exceeded expectations |
 
 ---
 
 ## 7. Methodology Observations for DSM
 
-*To be populated throughout the project. Initial observations:*
-
 1. Adding a research phase before sprint planning significantly improved architecture decisions for this ML/AI project.
-2. DSM_0 checklist was effective for project initialization -- provided clear structure without unnecessary overhead.
+2. DSM_0 checklist was effective for project initialization — provided clear structure without unnecessary overhead.
+3. The experiment framework (C.1.3, C.1.5, C.1.6) is well-designed but nearly invisible to the standard project workflow. It should be surfaced earlier.
+4. Cell-by-cell notebook protocol is essential for maintaining human context but needs granularity (code cells ≠ markdown cells).
+5. "Explain before acting" is the most impactful collaboration pattern — prevents wasted effort and keeps the human in the loop.
+6. Ablation studies before shipping prevent implementing the wrong configuration. Should be standard practice.
+7. The three-file feedback system works well once the blog materials are separated from DSM feedback.
+8. Sprint boundary checklists need README updates included — it's the most visible artifact and easy to forget.
+9. LinkedIn posts require plain text formatting — DSM blog templates should have platform-specific variants.
 
 ---
 
