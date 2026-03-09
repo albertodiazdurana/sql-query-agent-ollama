@@ -303,7 +303,7 @@ The evaluation harness ([`scripts/eval_harness.py`](scripts/eval_harness.py)) is
 
 ## Development Methodology
 
-This project is one of two active case studies for the [Data Science Methodology (DSM)](https://github.com/albertodiazdurana/take-ai-bite), a structured collaboration framework for AI-assisted data science and software engineering projects. Both repositories are developed in parallel by the same author: DSM defines the methodology, while this project and the [DSM Graph Explorer](https://github.com/albertodiazdurana/take-ai-bite) validate it in practice. The relationship is bidirectional — DSM provides the structure for sprint planning, experiment design, and decision-making, and this project feeds real-world observations back into DSM through dedicated feedback files (`docs/feedback/`), creating a continuous improvement loop between methodology and application.
+This project is one of two active case studies for the [Data Science Methodology (DSM)](https://github.com/albertodiazdurana/take-ai-bite), a structured collaboration framework for AI-assisted data science and software engineering projects. Both repositories are developed in parallel by the same author: DSM defines the methodology, while this project and the [DSM Graph Explorer](https://github.com/albertodiazdurana/dsm-graph-explorer) validate it in practice. The relationship is bidirectional — DSM provides the structure for sprint planning, experiment design, and decision-making, and this project feeds real-world observations back into DSM through dedicated feedback files (`docs/feedback/`), creating a continuous improvement loop between methodology and application.
 
 DSM shapes how this project is organized:
 
