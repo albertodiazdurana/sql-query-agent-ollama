@@ -303,7 +303,7 @@ The evaluation harness ([`scripts/eval_harness.py`](scripts/eval_harness.py)) is
 
 ## Development Methodology
 
-This project is one of two active case studies for the [Data Science Methodology (DSM)](https://github.com/albertodiazdurana/take-ai-bite), a structured collaboration framework for AI-assisted data science and software engineering projects. Both repositories are developed in parallel by the same author: DSM defines the methodology, while this project and the [DSM Graph Explorer](https://github.com/albertodiazdurana/dsm-graph-explorer) validate it in practice. The relationship is bidirectional — DSM provides the structure for sprint planning, experiment design, and decision-making, and this project feeds real-world observations back into DSM through dedicated feedback files (`docs/feedback/`), creating a continuous improvement loop between methodology and application.
+This project is one of two active case studies for the [Take AI Bite](https://github.com/albertodiazdurana/take-ai-bite) framework, powered by the Deliberate Systematic Methodology (DSM) — a structured collaboration framework for AI-assisted data science and software engineering projects. Both repositories are developed in parallel by the same author: Take AI Bite defines the methodology, while this project and the [DSM Graph Explorer](https://github.com/albertodiazdurana/dsm-graph-explorer) validate it in practice. The relationship is bidirectional — DSM provides the structure for sprint planning, experiment design, and decision-making, and this project feeds real-world observations back into DSM through dedicated feedback files (`docs/feedback/`), creating a continuous improvement loop between methodology and application.
 
 DSM shapes how this project is organized:
 
@@ -321,6 +321,11 @@ The project uses **DSM 1.0** (Data Science Collaboration) for Sprint 1 notebook 
 - **Part 2:** [The Case for Human-Agent Collaboration: What 28 Test Outputs Taught Me About Cognitive Limits](docs/blog/blog-s02-collaboration-value.md) — Why structured human-AI workflows catch errors that automation misses.
 - **Part 3:** [What 84 Experiments Taught Me About Prompt Engineering — When Best Practices Don't Transfer](docs/blog/blog-s02-ablation.md) — Counter-intuitive ablation study findings (few-shot and CoT hurt performance).
 - **Part 4:** *Ready to write* — "Shipping a Local-First AI App" — From notebook prototype to Docker-deployed application.
+
+## Author
+
+**Alberto Diaz Durana**
+[GitHub](https://github.com/albertodiazdurana) | [LinkedIn](https://www.linkedin.com/in/albertodiazdurana/) | [Website](https://takeaibite.de) | [Blog](https://blog.take-ai-bite.com)
 
 ## Contributing
 
